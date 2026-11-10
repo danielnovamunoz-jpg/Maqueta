@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <script>document.documentElement.classList.add('js');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Terminal Intermunicipal de Vélez · Conexión Constructora</title>
+  <meta name="description" content="Propuesta académica para una Terminal Intermunicipal de Transporte de Pasajeros en Vélez, Santander: contexto, distribución, modelo 3D interactivo, dimensiones, beneficiarios y presupuesto preliminar.">
+  <meta name="theme-color" content="#0F2742">
+  <meta property="og:title" content="Terminal Intermunicipal de Transporte de Pasajeros de Vélez">
+  <meta property="og:description" content="Una propuesta para centralizar, organizar y mejorar la movilidad regional. Explora el modelo 3D interactivo.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/img/render-hero-1600.webp">
+  <link rel="icon" href="assets/favicon-64.png" type="image/png" sizes="64x64">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" as="image" href="assets/img/render-hero-1000.webp" imagesrcset="assets/img/render-hero-1000.webp 1000w, assets/img/render-hero-1600.webp 1600w" imagesizes="(min-width: 960px) 60vw, 100vw" fetchpriority="high">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js" id="lucide-js" async></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <!-- ============================ ENCABEZADO ============================ -->
+  <header class="site-header" id="site-header">
+    <div class="container header__inner">
+      <a href="#inicio" class="brand" aria-label="Conexión Constructora · Terminal Vélez, ir al inicio">
+        <span class="brand__logo" aria-hidden="true">
+          <img class="brand__img brand__img--light" src="assets/img/logo-mark-light.webp" alt="" width="251" height="192">
+          <img class="brand__img brand__img--color" src="assets/img/logo-mark.webp" alt="" width="251" height="192">
+        </span>
+        <span class="brand__word" aria-hidden="true">
+          <img class="brand__img brand__img--light" src="assets/img/logo-wordmark-light.webp" alt="" width="560" height="122">
+          <img class="brand__img brand__img--color" src="assets/img/logo-wordmark.webp" alt="" width="560" height="122">
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Secciones">
+        <ul class="nav__list">
+          <li><a href="#contexto" class="nav__link">Contexto</a></li>
+          <li><a href="#propuesta" class="nav__link">Propuesta</a></li>
+          <li><a href="#ubicacion" class="nav__link">Ubicación</a></li>
+          <li><a href="#modelo-3d" class="nav__link">Modelo 3D</a></li>
+          <li><a href="#distribucion" class="nav__link">Distribución</a></li>
+          <li><a href="#dimensiones" class="nav__link">Dimensiones</a></li>
+          <li><a href="#impacto" class="nav__link">Impacto</a></li>
+          <li><a href="#presupuesto" class="nav__link">Presupuesto</a></li>
+          <li><a href="#equipo" class="nav__link">Equipo</a></li>
+        </ul>
+      </nav>
+
+
+      <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">
+        <span class="menu-toggle__bar"></span><span class="menu-toggle__bar"></span>
+      </button>
+    </div>
+    <div class="progress" aria-hidden="true"><span class="progress__bar" id="progress-bar"></span></div>
+  </header>
+
+  <!-- Menú móvil -->
+  <div class="mobile-menu" id="mobile-menu" aria-label="Menú de navegación" hidden>
+    <nav class="mobile-menu__nav">
+      <a href="#inicio" class="mobile-menu__link"><span>00</span>Inicio</a>
+      <a href="#contexto" class="mobile-menu__link"><span>01</span>Problemática y contexto</a>
+      <a href="#propuesta" class="mobile-menu__link"><span>02</span>La propuesta</a>
+      <a href="#ubicacion" class="mobile-menu__link"><span>03</span>Ubicación</a>
+      <a href="#modelo-3d" class="mobile-menu__link"><span>04</span>Modelo 3D interactivo</a>
+      <a href="#distribucion" class="mobile-menu__link"><span>05</span>Distribución</a>
+      <a href="#dimensiones" class="mobile-menu__link"><span>06</span>Dimensiones</a>
+      <a href="#galeria" class="mobile-menu__link"><span>07</span>Galería</a>
+      <a href="#impacto" class="mobile-menu__link"><span>08</span>Beneficiarios e impacto</a>
+      <a href="#presupuesto" class="mobile-menu__link"><span>09</span>Viabilidad y presupuesto</a>
+      <a href="#equipo" class="mobile-menu__link"><span>10</span>Equipo</a>
+    </nav>
+    <p class="mobile-menu__foot">Vélez, Santander · Propuesta académica</p>
+  </div>
+
+  <main id="contenido">
+
+    <!-- ============================ A · HERO ============================ -->
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <p class="eyebrow eyebrow--light"><span class="eyebrow__dot"></span>Proyecto de infraestructura y movilidad</p>
+          <h1 class="hero__title" id="hero-title">Terminal Intermunicipal de Transporte de Pasajeros de Vélez</h1>
+          <p class="hero__subtitle">Una propuesta para centralizar, organizar y mejorar la movilidad regional.</p>
+          <a href="#ubicacion" class="hero__location"><i data-lucide="map-pin" class="ico"></i>Vélez, Santander, Colombia</a>
+          <div class="hero__actions">
+            <a href="#modelo-3d" class="btn btn--primary btn--lg">Explorar proyecto <i data-lucide="arrow-right" class="ico"></i></a>
+            <a href="#propuesta" class="btn btn--ghost-light btn--lg">Conocer la propuesta</a>
+          </div>
+        </div>
+        <figure class="hero__visual">
+          <img src="assets/img/render-hero-1000.webp"
+               srcset="assets/img/render-hero-1000.webp 1000w, assets/img/render-hero-1600.webp 1600w"
+               sizes="(min-width: 960px) 60vw, 100vw"
+               width="1600" height="1100" fetchpriority="high"
+               alt="Representación 3D de la terminal vista en perspectiva: edificación central, seis plataformas de buses al fondo, estacionamientos al frente y zonas verdes perimetrales.">
+          <figcaption>Representación 3D conceptual basada en la maqueta (escala 1:100)</figcaption>
+        </figure>
+      </div>
+      <div class="container">
+        <dl class="hero__facts">
+          <div class="fact"><dt>Escala de la maqueta</dt><dd>1:100</dd></div>
+          <div class="fact"><dt>Maqueta</dt><dd>70 × 60 cm</dd></div>
+          <div class="fact"><dt>Plataformas</dt><dd>6 <small>B1–B6</small></dd></div>
+          <div class="fact"><dt>Área construida estimada</dt><dd>≈ 2.000 m²</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ============================ B · CONTEXTO ============================ -->
+    <section class="section" id="contexto" aria-labelledby="contexto-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index"><span>01</span>Problemática y contexto</p>
+          <h2 id="contexto-title">Un municipio sin un punto central para el transporte intermunicipal</h2>
+          <p class="lead">Actualmente, Vélez no cuenta con una terminal que centralice las operaciones del transporte intermunicipal. Las oficinas de las diferentes empresas transportadoras se encuentran dispersas dentro del municipio, lo que genera desorganización en los despachos, puntos de congestión y dificultades para establecer controles unificados.</p>
+        </header>
+
+        <div class="context-grid">
+          <figure class="diagram reveal" id="dispersion-diagram">
+            <div class="diagram__switch" role="group" aria-label="Comparar escenarios">
+              <button type="button" class="chip is-active" data-state="actual" aria-pressed="true">Situación actual</button>
+              <button type="button" class="chip" data-state="propuesta" aria-pressed="false">Con la terminal</button>
+            </div>
+            <svg class="diagram__svg" viewBox="0 0 360 250" role="img" aria-labelledby="diagram-desc">
+              <desc id="diagram-desc">Esquema ilustrativo: en la situación actual las oficinas de las empresas transportadoras están dispersas por el casco urbano; con la terminal se concentran en un solo punto.</desc>
+              <g class="diagram__streets" stroke="#D8DEE6" stroke-width="7" stroke-linecap="round" fill="none">
+                <path d="M20 60 H340 M20 125 H340 M20 190 H340 M70 20 V230 M150 20 V230 M230 20 V230 M300 20 V230"/>
+              </g>
+              <g class="diagram__blocks" fill="#EEF1F5">
+                <rect x="80" y="70" width="60" height="45" rx="5"/><rect x="160" y="70" width="60" height="45" rx="5"/><rect x="240" y="70" width="50" height="45" rx="5"/>
+                <rect x="80" y="135" width="60" height="45" rx="5"/><rect x="240" y="135" width="50" height="45" rx="5"/>
+              </g>
+              <g class="diagram__terminal">
+                <rect x="158" y="133" width="64" height="50" rx="8" fill="#0F2742"/>
+                <text x="190" y="199" text-anchor="middle" class="diagram__label diagram__label--strong">Terminal</text>
+              </g>
+              <g class="diagram__jams">
+                <circle cx="70" cy="60" r="11"/><circle cx="230" cy="125" r="11"/><circle cx="150" cy="190" r="11"/><circle cx="300" cy="60" r="11"/>
+              </g>
+              <g class="diagram__dots">
+                <circle class="ddot" r="7" style="--x0:44px;--y0:42px;--x1:172px;--y1:148px"/>
+                <circle class="ddot" r="7" style="--x0:118px;--y0:128px;--x1:190px;--y1:148px"/>
+                <circle class="ddot" r="7" style="--x0:196px;--y0:40px;--x1:208px;--y1:148px"/>
+                <circle class="ddot" r="7" style="--x0:318px;--y0:96px;--x1:172px;--y1:166px"/>
+                <circle class="ddot" r="7" style="--x0:262px;--y0:206px;--x1:190px;--y1:166px"/>
+                <circle class="ddot" r="7" style="--x0:44px;--y0:212px;--x1:208px;--y1:166px"/>
+              </g>
+              <g class="diagram__legend">
+                <circle cx="28" cy="240" r="5" fill="#C98A3A"/><text x="40" y="244" class="diagram__label">Oficinas de empresas</text>
+                <circle cx="180" cy="240" r="5" fill="rgba(214,69,65,.35)"/><text x="192" y="244" class="diagram__label">Puntos de congestión</text>
+              </g>
+            </svg>
+            <figcaption>Esquema ilustrativo: no representa ubicaciones reales ni cantidades exactas.</figcaption>
+          </figure>
+
+          <ol class="issues">
+            <li class="issue reveal">
+              <span class="issue__icon"><i data-lucide="split" class="ico"></i></span>
+              <div>
+                <h3><span class="issue__num">01</span>Dispersión de empresas transportadoras</h3>
+                <p>Las oficinas de las empresas se ubican en distintos puntos del casco urbano, sin un lugar común para su operación.</p>
+              </div>
+            </li>
+            <li class="issue reveal">
+              <span class="issue__icon"><i data-lucide="shuffle" class="ico"></i></span>
+              <div>
+                <h3><span class="issue__num">02</span>Desorganización de los despachos</h3>
+                <p>Despachar desde puntos separados genera congestión y dificulta establecer controles unificados sobre la operación.</p>
+              </div>
+            </li>
+            <li class="issue reveal">
+              <span class="issue__icon"><i data-lucide="git-merge" class="ico"></i></span>
+              <div>
+                <h3><span class="issue__num">03</span>Necesidad de centralización y mejor movilidad</h3>
+                <p>La propuesta busca ofrecer una alternativa de organización espacial y operativa para mejorar la movilidad y la experiencia de los usuarios.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="context-extra">
+          <figure class="quote reveal">
+            <blockquote>
+              <p>“Desorden y caos causado por el transporte público que afecta la eficiencia del sistema y la calidad de vida de los ciudadanos.”</p>
+            </blockquote>
+            <figcaption>Plan de Desarrollo Municipal de Vélez 2024–2027, citado en la formulación del proyecto. El plan reconoce la falta de un lugar propicio para centralizar el transporte público y contempla la terminal como una solución.</figcaption>
+          </figure>
+
+          <div class="why reveal">
+            <h3 class="h-small">¿Por qué Vélez?</h3>
+            <p>Entre los municipios analizados durante la formulación (Facatativá, San Miguel, Puerto Carreño, Vélez y Barbosa), Vélez presentó la combinación más favorable para el proyecto:</p>
+            <ul class="checklist">
+              <li><i data-lucide="check" class="ico"></i>Ausencia de una terminal que centralice las operaciones.</li>
+              <li><i data-lucide="check" class="ico"></i>Dispersión de los servicios de las empresas transportadoras.</li>
+              <li><i data-lucide="check" class="ico"></i>Conectividad regional.</li>
+              <li><i data-lucide="check" class="ico"></i>Una necesidad reconocida por la propia administración municipal.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ C · PROPUESTA ============================ -->
+    <section class="section section--alt" id="propuesta" aria-labelledby="propuesta-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index"><span>02</span>La propuesta</p>
+          <h2 id="propuesta-title">Una terminal para centralizar, organizar y conectar</h2>
+          <p class="lead">Diseñar una terminal intermunicipal que permita centralizar los servicios de transporte, organizar las operaciones de las empresas transportadoras y ofrecer espacios adecuados para pasajeros, conductores, trabajadores y comerciantes.</p>
+        </header>
+
+        <ul class="objectives">
+          <li class="objective reveal"><span class="objective__icon"><i data-lucide="layout-grid" class="ico"></i></span><p>Mejorar la organización del transporte intermunicipal.</p></li>
+          <li class="objective reveal"><span class="objective__icon"><i data-lucide="arrow-up-down" class="ico"></i></span><p>Facilitar el ascenso y descenso de pasajeros.</p></li>
+          <li class="objective reveal"><span class="objective__icon"><i data-lucide="clipboard-check" class="ico"></i></span><p>Centralizar los despachos.</p></li>
+          <li class="objective reveal"><span class="objective__icon"><i data-lucide="shield-check" class="ico"></i></span><p>Mejorar la comodidad y seguridad de los usuarios.</p></li>
+          <li class="objective reveal"><span class="objective__icon"><i data-lucide="route" class="ico"></i></span><p>Organizar los flujos peatonales y vehiculares.</p></li>
+          <li class="objective reveal"><span class="objective__icon"><i data-lucide="network" class="ico"></i></span><p>Fortalecer la conectividad regional.</p></li>
+        </ul>
+
+        <div class="connect">
+          <div class="connect__text reveal">
+            <p class="eyebrow">Conexión estratégica</p>
+            <h3 class="h-medium">Vélez, entre la Troncal Central y la Transversal del Carare</h3>
+            <p>Vélez es la capital de la Provincia de Vélez, que agrupa 20 municipios. Se conecta con la <strong>Troncal Central Nacional</strong> mediante la vía Barbosa–Vélez y con la región del Magdalena Medio mediante la <strong>Transversal del Carare</strong>.</p>
+            <p>La propuesta plantea una alternativa para reorganizar los despachos dispersos y articular la terminal con estos corredores.</p>
+            <div class="scope">
+              <p class="scope__title">Alcance académico de la propuesta</p>
+              <ul class="scope__list">
+                <li>Formulación y planeación: interesados, presupuesto, cronograma y gestión de riesgos.</li>
+                <li>Diseño conceptual de zonificación y de flujos vehiculares y peatonales.</li>
+                <li>Esquema preliminar en planta.</li>
+                <li>Maqueta física académica de la infraestructura.</li>
+              </ul>
+            </div>
+          </div>
+          <figure class="route-map reveal">
+            <svg viewBox="0 0 400 300" role="img" aria-labelledby="route-desc">
+              <desc id="route-desc">Esquema de conectividad: Vélez se une a Barbosa por la vía Barbosa–Vélez, que empalma con la Troncal Central Nacional; desde Vélez parte la Transversal del Carare hacia el Magdalena Medio.</desc>
+              <defs>
+                <pattern id="rm-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#E3E8EE" stroke-width="1"/></pattern>
+              </defs>
+              <rect width="400" height="300" fill="url(#rm-grid)"/>
+              <path class="rm-line rm-line--troncal" d="M300 20 C 296 90, 304 170, 296 280"/>
+              <path class="rm-line rm-line--via" d="M178 128 C 220 150, 262 168, 299 184"/>
+              <path class="rm-line rm-line--carare" d="M176 126 C 130 112, 90 96, 22 86"/>
+              <text x="290" y="40" class="rm-text" text-anchor="end">Troncal Central Nacional</text>
+              <text x="256" y="149" class="rm-text rm-text--muted" text-anchor="middle" transform="rotate(25 256 149)">Vía Barbosa–Vélez</text>
+              <text x="24" y="56" class="rm-text">Transversal del Carare</text>
+              <text x="24" y="73" class="rm-text rm-text--muted">hacia el Magdalena Medio</text>
+              <circle cx="299" cy="184" r="7" class="rm-node"/>
+              <text x="312" y="189" class="rm-text rm-text--node">Barbosa</text>
+              <circle cx="177" cy="127" r="13" class="rm-node rm-node--main"/>
+              <circle cx="177" cy="127" r="22" class="rm-pulse"/>
+              <text x="177" y="160" class="rm-text rm-text--main" text-anchor="middle">Vélez</text>
+            </svg>
+            <figcaption>Esquema ilustrativo de conectividad, sin escala ni trazado real de las vías.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ UBICACIÓN ============================ -->
+    <section class="section" id="ubicacion" aria-labelledby="ubicacion-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index"><span>03</span>Ubicación del proyecto</p>
+          <h2 id="ubicacion-title">El sitio propuesto para la terminal</h2>
+          <p class="lead">Punto definido por el equipo para localizar la Terminal Intermunicipal de Transporte de Pasajeros dentro del municipio de Vélez, Santander.</p>
+        </header>
+
+        <div class="location">
+          <figure class="map reveal">
+            <div class="map__frame" id="map-frame">
+              <div class="map__placeholder" aria-hidden="true">
+                <i data-lucide="map-pin" class="ico"></i>
+                <span>Cargando mapa…</span>
+              </div>
+              <iframe id="map-iframe" title="Mapa de la ubicación propuesta para la terminal en Vélez, Santander" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+              <button type="button" class="map__guard" id="map-guard" hidden>
+                <span class="map__guard-chip"><i data-lucide="hand" class="ico"></i>Toca para explorar el mapa</span>
+              </button>
+            </div>
+            <div class="map__bar">
+              <div class="seg seg--light" role="group" aria-label="Tipo de mapa">
+                <button type="button" class="seg__btn is-active" data-maptype="m" aria-pressed="true">Mapa</button>
+                <button type="button" class="seg__btn" data-maptype="k" aria-pressed="false">Satélite</button>
+              </div>
+              <a class="map__ext" href="https://www.google.com/maps/search/?api=1&amp;query=6.009761,-73.669543" target="_blank" rel="noopener">Ver en pantalla completa <i data-lucide="arrow-up-right" class="ico"></i></a>
+            </div>
+            <figcaption>Mapa interactivo de Google Maps centrado en las coordenadas del sitio propuesto.</figcaption>
+          </figure>
+
+          <aside class="location__info reveal" aria-label="Datos de la ubicación">
+            <p class="location__badge"><span class="eyebrow__dot"></span>Sitio propuesto</p>
+            <h3 class="location__title">Vélez, Santander, Colombia</h3>
+            <dl class="coords">
+              <div><dt>Latitud</dt><dd>6,009761° N</dd></div>
+              <div><dt>Longitud</dt><dd>73,669543° O</dd></div>
+              <div class="coords__wide"><dt>Grados, minutos y segundos</dt><dd>6° 00′ 35,1″ N · 73° 40′ 10,4″ O</dd></div>
+            </dl>
+
+            <button type="button" class="copy-btn" id="copy-coords" data-coords="6.009761, -73.669543">
+              <span class="copy-btn__value">6.009761, -73.669543</span>
+              <span class="copy-btn__action"><i data-lucide="copy" class="ico"></i><span id="copy-label">Copiar</span></span>
+            </button>
+
+            <div class="location__actions">
+              <a class="btn btn--primary btn--sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=6.009761,-73.669543" target="_blank" rel="noopener"><i data-lucide="navigation" class="ico"></i>Cómo llegar</a>
+              <a class="btn btn--outline btn--sm" href="https://www.openstreetmap.org/?mlat=6.009761&amp;mlon=-73.669543#map=17/6.009761/-73.669543" target="_blank" rel="noopener"><i data-lucide="map" class="ico"></i>OpenStreetMap</a>
+            </div>
+
+            <p class="location__note"><i data-lucide="info" class="ico"></i><span>Ubicación de referencia de la propuesta académica. Su viabilidad depende de los estudios técnicos, la normativa de uso del suelo y la gestión del predio, riesgos identificados en la formulación del proyecto.</span></p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ D · MODELO 3D ============================ -->
+    <section class="section section--viewer" id="modelo-3d" aria-labelledby="modelo-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index"><span>04</span>Visualización 3D interactiva</p>
+          <h2 id="modelo-title">Recorre la terminal en tres dimensiones</h2>
+          <p class="lead">Modelo construido con geometrías a partir de la planta y la vista isométrica de la maqueta. Gíralo, acércalo y selecciona cada espacio para conocer su función y los elementos que contiene.</p>
+        </header>
+        <p class="viewer-guide reveal"><i data-lucide="mouse-pointer-click" class="ico"></i>Selecciona cualquier espacio de la terminal para conocer su función y distribución.</p>
+      </div>
+
+      <div class="container container--viewer">
+        <div class="viewer" id="viewer">
+          <div class="viewer__stage" id="viewer-stage">
+            <div class="viewer__poster" id="viewer-poster">
+              <div class="viewer__loader" aria-hidden="true"><span></span><span></span><span></span></div>
+              <p class="viewer__poster-text" id="viewer-status">Preparando el modelo 3D…</p>
+              <button type="button" class="btn btn--primary btn--sm" id="viewer-load" hidden>Cargar modelo 3D</button>
+            </div>
+
+            <div class="viewer__top">
+              <div class="seg" role="group" aria-label="Modo de visualización">
+                <button type="button" class="seg__btn is-active" data-mode="3d" aria-pressed="true">3D</button>
+                <button type="button" class="seg__btn" data-mode="2d" aria-pressed="false">Plano 2D</button>
+              </div>
+              <div class="viewer__top-right">
+                <button type="button" class="v-btn" data-action="spaces" aria-label="Ver lista de espacios"><i data-lucide="list" class="ico"></i><span class="v-btn__text">Espacios</span></button>
+                <button type="button" class="v-btn v-btn--icon" data-action="expand" aria-label="Ampliar visor" aria-pressed="false"><i data-lucide="maximize-2" class="ico ico--expand"></i><i data-lucide="minimize-2" class="ico ico--collapse"></i></button>
+              </div>
+            </div>
+
+            <div class="viewer__zoom" role="group" aria-label="Zoom">
+              <button type="button" class="v-btn v-btn--icon" data-action="zoom-in" aria-label="Acercar"><i data-lucide="plus" class="ico"></i></button>
+              <button type="button" class="v-btn v-btn--icon" data-action="zoom-out" aria-label="Alejar"><i data-lucide="minus" class="ico"></i></button>
+            </div>
+
+            <div class="viewer__hint" id="viewer-hint" aria-live="polite"></div>
+            <button type="button" class="viewer__release" id="viewer-release" hidden><i data-lucide="hand" class="ico"></i>Volver a desplazar la página</button>
+            <div class="viewer__tooltip" id="viewer-tooltip" hidden></div>
+
+            <div class="viewer__plan" id="viewer-plan" hidden>
+              <div class="plan2d" id="plan2d"></div>
+            </div>
+
+            <aside class="sheet" id="info-sheet" aria-labelledby="sheet-title" hidden>
+              <button type="button" class="sheet__handle" id="sheet-handle" aria-label="Expandir o contraer el panel"><span></span></button>
+              <div class="sheet__body" id="sheet-body"></div>
+            </aside>
+          </div>
+
+          <div class="viewer__toolbar" role="toolbar" aria-label="Controles del visor 3D">
+            <button type="button" class="tool" data-action="view-general"><i data-lucide="box" class="ico"></i><span>Vista general</span></button>
+            <button type="button" class="tool" data-action="view-superior"><i data-lucide="scan" class="ico"></i><span>Superior</span></button>
+            <button type="button" class="tool" data-action="view-frontal"><i data-lucide="panel-bottom" class="ico"></i><span>Frontal</span></button>
+            <button type="button" class="tool" data-action="view-lateral"><i data-lucide="panel-right" class="ico"></i><span>Lateral</span></button>
+            <button type="button" class="tool" data-action="roof" aria-pressed="true"><i data-lucide="layers" class="ico"></i><span data-label-on="Ocultar cubierta" data-label-off="Mostrar cubierta">Ocultar cubierta</span></button>
+            <button type="button" class="tool" data-action="interior" aria-pressed="false"><i data-lucide="door-open" class="ico"></i><span>Ver interiores</span></button>
+            <button type="button" class="tool" data-action="labels" aria-pressed="false"><i data-lucide="tag" class="ico"></i><span>Etiquetas</span></button>
+            <button type="button" class="tool" data-action="reset"><i data-lucide="rotate-ccw" class="ico"></i><span>Reiniciar cámara</span></button>
+          </div>
+        </div>
+
+        <div class="viewer-notes">
+          <p class="viewer-notes__item"><i data-lucide="hand" class="ico"></i><span><strong>En celular:</strong> toca el modelo para activarlo, arrastra con un dedo para girar y usa dos dedos para acercar o desplazar. <strong>En computador:</strong> arrastra para girar, clic derecho para desplazar y clic + rueda para acercar.</span></p>
+          <p class="viewer-notes__item"><i data-lucide="info" class="ico"></i><span>Representación 3D conceptual. Sigue la distribución dibujada en la planta de referencia, normalizada al tablero de 70 × 60 cm; las cotas escritas en la planta y en el cuadro de medidas no son proporcionales entre sí, por lo que el modelo no está a escala exacta. Mobiliario, vehículos y vegetación son ilustrativos.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ E · DISTRIBUCIÓN ============================ -->
+    <section class="section" id="distribucion" aria-labelledby="distribucion-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index"><span>05</span>Distribución arquitectónica</p>
+          <h2 id="distribucion-title">Cuatro zonas que ordenan la operación</h2>
+          <p class="lead">La distribución separa las áreas operativas, de atención al usuario, comerciales y exteriores para organizar los flujos peatonales y vehiculares alrededor de una edificación central.</p>
+        </header>
+
+        <div class="dist">
+          <figure class="zoning reveal">
+            <div class="zoning__svg" id="zoning-svg"></div>
+            <figcaption>Zonificación según la planta de referencia. Toca una zona para resaltarla.</figcaption>
+          </figure>
+          <div class="zones" id="zones-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ F · DIMENSIONES ============================ -->
+    <section class="section section--alt" id="dimensiones" aria-labelledby="dimensiones-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index"><span>06</span>Dimensiones del proyecto</p>
+          <h2 id="dimensiones-title">La maqueta en cifras</h2>
+          <p class="lead">Las medidas corresponden a la maqueta física a escala 1:100, en la que 1 cm equivale a 1 m real. No son las dimensiones del edificio construido.</p>
+        </header>
+
+        <div class="dims">
+          <div class="dims__figures reveal">
+            <dl class="kpis">
+              <div class="kpi"><dt>Largo</dt><dd>70<span>cm</span></dd></div>
+              <div class="kpi"><dt>Ancho</dt><dd>60<span>cm</span></dd></div>
+              <div class="kpi"><dt>Escala</dt><dd>1:100</dd></div>
+              <div class="kpi"><dt>Altura aprox. del edificio</dt><dd>4,5<span>cm</span></dd></div>
+            </dl>
+            <figure class="board">
+              <svg viewBox="0 0 300 268" role="img" aria-labelledby="board-desc">
+                <desc id="board-desc">Tablero de la maqueta de 70 centímetros de largo por 60 centímetros de ancho.</desc>
+                <rect x="34" y="34" width="245" height="210" rx="6" class="board__base"/>
+                <rect x="48" y="48" width="217" height="182" rx="3" class="board__plot"/>
+                <rect x="90" y="96" width="160" height="84" rx="2" class="board__bldg"/>
+                <path d="M34 18 H279" class="board__dim"/><path d="M34 12 V24 M279 12 V24" class="board__dim"/>
+                <text x="156" y="13" text-anchor="middle" class="board__text">70 cm</text>
+                <path d="M18 34 V244" class="board__dim"/><path d="M12 34 H24 M12 244 H24" class="board__dim"/>
+                <text x="12" y="139" text-anchor="middle" class="board__text" transform="rotate(-90 12 139)">60 cm</text>
+                <text x="170" y="142" text-anchor="middle" class="board__text board__text--light">Edificación</text>
+                <text x="170" y="157" text-anchor="middle" class="board__text board__text--light board__text--small">altura ≈ 4,5 cm</text>
+              </svg>
+            </figure>
+          </div>
+
+          <div class="dims__table reveal">
+            <div class="table-wrap">
+              <table class="mtable" id="dims-table">
+                <caption class="sr-only">Medidas de referencia de los espacios en la maqueta</caption>
+                <thead>
+                  <tr><th scope="col">Espacio</th><th scope="col">Cuadro de medidas <small>(cm)</small></th><th scope="col">Cota en planta <small>(cm)</small></th><th scope="col">Boceto preliminar</th></tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ GALERÍA ============================ -->
+    <section class="section" id="galeria" aria-labelledby="galeria-title">
+      <div class="container">
+        <header class="section-head section-head--row reveal">
+          <div>
+            <p class="section-index"><span>07</span>Galería</p>
+            <h2 id="galeria-title">Imágenes del proyecto</h2>
+          </div>
+          <p class="lead lead--narrow">Maqueta de referencia, boceto preliminar, cronograma de formulación y vistas del modelo 3D. Toca una imagen para ampliarla.</p>
+        </header>
+      </div>
+      <div class="gallery-scroller">
+        <ul class="gallery" id="gallery">
+          <li class="gallery__item reveal">
+            <button type="button" class="gallery__btn" data-full="assets/img/render-general-1600.webp" data-caption="Modelo 3D · Vista general (representación conceptual)">
+              <img src="assets/img/render-general-800.webp" alt="Vista general del modelo 3D de la terminal" loading="lazy" width="800" height="560">
+              <span class="gallery__cap"><strong>Vista general</strong>Modelo 3D conceptual</span>
+            </button>
+          </li>
+          <li class="gallery__item reveal">
+            <button type="button" class="gallery__btn" data-full="assets/img/render-interior-1600.webp" data-caption="Modelo 3D · Espacios interiores sin cubierta (representación conceptual)">
+              <img src="assets/img/render-interior-800.webp" alt="Modelo 3D sin cubierta mostrando los espacios interiores" loading="lazy" width="800" height="560">
+              <span class="gallery__cap"><strong>Espacios interiores</strong>Modelo 3D sin cubierta</span>
+            </button>
+          </li>
+          <li class="gallery__item reveal">
+            <button type="button" class="gallery__btn" data-full="assets/img/maqueta-planta-996.webp" data-caption="Planta general de la maqueta (vista superior) con cotas en centímetros">
+              <img src="assets/img/maqueta-planta-640.webp" alt="Planta general de la maqueta con la distribución de espacios y cotas" loading="lazy" width="640" height="521">
+              <span class="gallery__cap"><strong>Planta general</strong>Maqueta · vista superior</span>
+            </button>
+          </li>
+          <li class="gallery__item reveal">
+            <button type="button" class="gallery__btn" data-full="assets/img/maqueta-isometrica-533.webp" data-caption="Vista general de la maqueta en isométrica (70 × 60 cm)">
+              <img src="assets/img/maqueta-isometrica-533.webp" alt="Vista isométrica de la maqueta de la terminal" loading="lazy" width="533" height="398">
+              <span class="gallery__cap"><strong>Vista isométrica</strong>Maqueta de referencia</span>
+            </button>
+          </li>
+          <li class="gallery__item reveal">
+            <button type="button" class="gallery__btn" data-full="assets/img/render-superior-1600.webp" data-caption="Modelo 3D · Vista superior (representación conceptual)">
+              <img src="assets/img/render-superior-800.webp" alt="Vista superior del modelo 3D de la terminal" loading="lazy" width="800" height="560">
+              <span class="gallery__cap"><strong>Vista superior</strong>Modelo 3D conceptual</span>
+            </button>
+          </li>
+          <li class="gallery__item reveal">
+            <button type="button" class="gallery__btn" data-full="assets/img/maqueta-cuadro-medidas-536.webp" data-caption="Cuadro de medidas de los espacios en la maqueta">
+              <img src="assets/img/maqueta-cuadro-medidas-536.webp" alt="Cuadro de medidas de los espacios de la maqueta" loading="lazy" width="536" height="411">
+              <span class="gallery__cap"><strong>Cuadro de medidas</strong>Maqueta · escala 1:100</span>
+            </button>
+          </li>
+          <li class="gallery__item reveal">
+            <button type="button" class="gallery__btn" data-full="assets/img/boceto-planta-1102.webp" data-caption="Boceto preliminar de la infraestructura propuesta (Formulación del proyecto, figura 2; elaborado con apoyo de herramientas de inteligencia artificial)">
+              <img src="assets/img/boceto-planta-640.webp" alt="Boceto en planta de la infraestructura propuesta" loading="lazy" width="640" height="424">
+              <span class="gallery__cap"><strong>Boceto preliminar</strong>Formulación del proyecto</span>
+            </button>
+          </li>
+          <li class="gallery__item reveal">
+            <button type="button" class="gallery__btn" data-full="assets/img/cronograma-gantt-1536.webp" data-caption="Diagrama de Gantt de la formulación y planeación del proyecto (15 semanas académicas)">
+              <img src="assets/img/cronograma-gantt-640.webp" alt="Diagrama de Gantt del proyecto" loading="lazy" width="640" height="427">
+              <span class="gallery__cap"><strong>Cronograma</strong>Formulación · 15 semanas</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="container gallery-nav" aria-hidden="true">
+        <button type="button" class="round-btn" data-gallery="prev" tabindex="-1"><i data-lucide="chevron-left" class="ico"></i></button>
+        <button type="button" class="round-btn" data-gallery="next" tabindex="-1"><i data-lucide="chevron-right" class="ico"></i></button>
+      </div>
+    </section>
+
+    <!-- ============================ G · BENEFICIARIOS ============================ -->
+    <section class="section section--alt" id="impacto" aria-labelledby="impacto-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index"><span>08</span>Beneficiarios e impacto</p>
+          <h2 id="impacto-title">Una infraestructura pensada para todos los actores del transporte</h2>
+          <p class="lead">Los beneficiarios no se limitan a quienes usan el servicio: incluyen a quienes participan en la operación de la terminal y a la población de su área de influencia.</p>
+        </header>
+
+        <ul class="beneficiaries">
+          <li class="beneficiary reveal">
+            <span class="beneficiary__icon"><i data-lucide="users" class="ico"></i></span>
+            <h3>Usuarios y pasajeros</h3>
+            <p>Mejores condiciones de movilidad, accesibilidad, comodidad, seguridad e información durante la llegada, la espera, el abordaje y la salida.</p>
+          </li>
+          <li class="beneficiary reveal">
+            <span class="beneficiary__icon"><i data-lucide="bus" class="ico"></i></span>
+            <h3>Empresas transportadoras y conductores</h3>
+            <p>Centralización de operaciones, organización de los despachos y espacios adecuados para sus actividades, incluido el descanso de los conductores.</p>
+          </li>
+          <li class="beneficiary reveal">
+            <span class="beneficiary__icon"><i data-lucide="briefcase" class="ico"></i></span>
+            <h3>Trabajadores de la terminal</h3>
+            <p>Mejores condiciones para desarrollar funciones administrativas y operativas, y una coordinación más clara de las actividades.</p>
+          </li>
+          <li class="beneficiary reveal">
+            <span class="beneficiary__icon"><i data-lucide="store" class="ico"></i></span>
+            <h3>Comunidad y actividades económicas</h3>
+            <p>Mejor conectividad regional, oportunidades comerciales y potencial generación de empleo en el área de influencia.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================ H · PRESUPUESTO ============================ -->
+    <section class="section" id="presupuesto" aria-labelledby="presupuesto-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index"><span>09</span>Viabilidad y presupuesto</p>
+          <h2 id="presupuesto-title">Presupuesto preliminar por magnitud poblacional</h2>
+          <p class="lead">La estimación toma como referencia el costo por metro cuadrado del terminal de San Miguel (Putumayo), el comparable más reciente que reporta área construida, aplicado a un área dimensionada según la población regional de la Provincia de Vélez.</p>
+        </header>
+
+        <div class="budget">
+          <div class="budget__main reveal">
+            <p class="budget__label">Total estimado</p>
+            <p class="budget__total"><span class="budget__currency">$</span><span class="budget__value" data-count="11934">11.934</span><span class="budget__unit">millones COP</span></p>
+
+            <div class="stackbar" role="img" aria-label="Distribución del presupuesto: obra civil 9.180 millones (76,9 %), AIU 2.754 millones (23,1 %)">
+              <span class="stackbar__seg stackbar__seg--a" style="--w:76.92%"></span>
+              <span class="stackbar__seg stackbar__seg--b" style="--w:23.08%"></span>
+            </div>
+
+            <ul class="budget__legend">
+              <li>
+                <span class="swatch swatch--a"></span>
+                <div><p class="budget__item">Obra civil</p><p class="budget__calc">2.000 m² × $4,59 millones/m²</p></div>
+                <p class="budget__amount">$9.180 M <small>76,9 %</small></p>
+              </li>
+              <li>
+                <span class="swatch swatch--b"></span>
+                <div><p class="budget__item">Administración, imprevistos y utilidad (AIU)</p><p class="budget__calc">30 % sobre la obra civil</p></div>
+                <p class="budget__amount">$2.754 M <small>23,1 %</small></p>
+              </li>
+            </ul>
+          </div>
+
+          <div class="budget__side">
+            <dl class="stats reveal">
+              <div class="stat"><dt>Área construida estimada</dt><dd>≈ 2.000 <span>m²</span></dd><p>Rango de dimensionamiento: entre 1.800 y 2.100 m².</p></div>
+              <div class="stat"><dt>Población regional de referencia</dt><dd>≈ 196.050 <span>hab.</span></dd><p>Según el dimensionamiento poblacional del documento del proyecto.</p></div>
+              <div class="stat"><dt>Razón de dimensionamiento</dt><dd>≈ 0,0107 <span>m²/hab.</span></dd><p>Tomada del terminal de San Miguel, Putumayo.</p></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="callout callout--note reveal">
+          <i data-lucide="info" class="ico"></i>
+          <div>
+            <p><strong>Los valores corresponden a una estimación preliminar por magnitud poblacional y no constituyen un presupuesto definitivo de obra. No incluyen el predio, estudios técnicos detallados ni licenciamiento ambiental.</strong></p>
+            <p>La propuesta se desarrolla en un contexto académico (asignatura Administración para Ingenieros) y no representa una obra aprobada ni en construcción. El área de 2.000 m² proviene del dimensionamiento poblacional y no de la suma de los espacios de la maqueta.</p>
+          </div>
+        </div>
+
+        <div class="details-grid">
+          <details class="disclosure reveal">
+            <summary><span>Referencias de costo utilizadas</span><i data-lucide="chevron-down" class="ico"></i></summary>
+            <div class="table-wrap">
+              <table class="mtable mtable--compact">
+                <thead><tr><th scope="col">Municipio</th><th scope="col">Año</th><th scope="col">Costo total</th><th scope="col">Tamaño</th></tr></thead>
+                <tbody>
+                  <tr><td data-label="Municipio">Espinal, Tolima</td><td data-label="Año">2010</td><td data-label="Costo total">$6.500 M</td><td data-label="Tamaño">25.486 m²</td></tr>
+                  <tr><td data-label="Municipio">Yarumal, Antioquia</td><td data-label="Año">2019</td><td data-label="Costo total">$6.000 M</td><td data-label="Tamaño">Lote de 57.000 m²</td></tr>
+                  <tr><td data-label="Municipio">Cartago, Valle del Cauca</td><td data-label="Año">2023 (en construcción)</td><td data-label="Costo total">$9.000 M</td><td data-label="Tamaño">Lote de 33.000 m²</td></tr>
+                  <tr><td data-label="Municipio">Melgar, Tolima</td><td data-label="Año">2018</td><td data-label="Costo total">$22.000 M</td><td data-label="Tamaño">30 taquillas, 20 locales</td></tr>
+                  <tr><td data-label="Municipio">San Miguel, Putumayo</td><td data-label="Año">2025–2026 (diseño)</td><td data-label="Costo total">$9.700 M</td><td data-label="Tamaño">2.111 m² construidos</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="disclosure__note">Fuente: tabla 2 del documento de formulación del proyecto. San Miguel es la única referencia que reporta metros cuadrados construidos (≈ $4,59 millones/m²).</p>
+          </details>
+
+          <details class="disclosure reveal">
+            <summary><span>Riesgos identificados</span><i data-lucide="chevron-down" class="ico"></i></summary>
+            <ul class="risks">
+              <li><span class="tag">Financiero</span>Demora o bloqueo en la financiación de la obra.</li>
+              <li><span class="tag">Cronograma</span>Sobrecostos y extensión de plazos.</li>
+              <li><span class="tag">Predial / normativo</span>Predio propuesto no apto por normativa de suelo.</li>
+              <li><span class="tag">Operativo / ambiental</span>Afectación de servicios públicos básicos durante la construcción u operación.</li>
+              <li><span class="tag">Normativo</span>Incumplimiento de requisitos legales de habilitación (Decreto 1079 de 2015).</li>
+            </ul>
+            <p class="disclosure__note">Fuente: matriz de riesgos del documento de formulación del proyecto.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ I · EQUIPO ============================ -->
+    <section class="section section--alt" id="equipo" aria-labelledby="equipo-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index"><span>10</span>Equipo del proyecto</p>
+          <h2 id="equipo-title">Tres responsabilidades, un solo proyecto</h2>
+          <p class="lead">Grupo 5 · Administración para Ingenieros · Semestre 2026B. El equipo se organiza por distribución de responsabilidades, no por una jerarquía rígida.</p>
+        </header>
+
+        <div class="company reveal">
+          <img class="company__logo" src="assets/img/logo-conexion.webp" alt="Logo de Conexión Constructora: Infraestructura para un mejor mañana" width="900" height="687" loading="lazy">
+          <div class="company__text">
+            <p class="company__eyebrow">Empresa que presenta la propuesta</p>
+            <h3 class="company__name">Conexión Constructora</h3>
+            <p class="company__tagline">Infraestructura para un mejor mañana</p>
+            <ul class="company__values" aria-label="Valores">
+              <li>Colombia</li><li>Regiones</li><li>Personas</li>
+            </ul>
+          </div>
+        </div>
+
+        <ul class="team">
+          <li class="member reveal">
+            <span class="member__icon"><i data-lucide="pencil-ruler" class="ico"></i></span>
+            <p class="member__role">Diseño conceptual y distribución espacial</p>
+            <h3 class="member__name">José Daniel Nova Muñoz</h3>
+            <p class="member__desc">Desarrollo del diseño conceptual de la terminal, su distribución y su representación espacial.</p>
+          </li>
+          <li class="member reveal">
+            <span class="member__icon"><i data-lucide="compass" class="ico"></i></span>
+            <p class="member__role">Coordinación general e investigación</p>
+            <h3 class="member__name">Juan Sebastián Moreno Rizo</h3>
+            <p class="member__desc">Coordinación del equipo, investigación del municipio y el sitio, seguimiento de avances e integración de los aportes.</p>
+          </li>
+          <li class="member reveal">
+            <span class="member__icon"><i data-lucide="coins" class="ico"></i></span>
+            <p class="member__role">Recursos, materiales y apoyo presupuestal</p>
+            <h3 class="member__name">Joan Sebastian Moreno Aza</h3>
+            <p class="member__desc">Organización de los recursos, identificación de los materiales y apoyo en los aspectos presupuestales.</p>
+          </li>
+        </ul>
+
+        <div class="process reveal">
+          <p class="process__title">Proceso de coordinación del trabajo</p>
+          <ol class="process__steps">
+            <li>Asignación de actividad</li>
+            <li>Desarrollo</li>
+            <li>Entrega del avance</li>
+            <li>Revisión</li>
+            <li>Ajustes</li>
+            <li>Integración al proyecto</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ J · CIERRE ============================ -->
+    <section class="closing" id="cierre" aria-labelledby="cierre-title">
+      <div class="closing__bg" aria-hidden="true"></div>
+      <div class="container closing__inner reveal">
+        <img class="closing__logo" src="assets/img/logo-conexion-light.webp" alt="Conexión Constructora" width="900" height="687" loading="lazy">
+        <p class="eyebrow eyebrow--light"><span class="eyebrow__dot"></span>Vélez, Santander</p>
+        <h2 id="cierre-title">Conectando a Vélez con nuevas oportunidades de movilidad</h2>
+        <p class="closing__text">Una propuesta de infraestructura que busca organizar el transporte intermunicipal, mejorar la experiencia de los usuarios y fortalecer la conectividad de Vélez con su región.</p>
+        <div class="closing__actions">
+          <a href="#modelo-3d" class="btn btn--primary btn--lg">Explorar el modelo 3D <i data-lucide="box" class="ico"></i></a>
+          <a href="#inicio" class="btn btn--ghost-light btn--lg">Volver al inicio <i data-lucide="arrow-up" class="ico"></i></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/img/logo-mark-light.webp" alt="" width="251" height="192" loading="lazy">
+        <img src="assets/img/logo-wordmark-light.webp" alt="Conexión Constructora" width="560" height="122" loading="lazy">
+      </div>
+      <div>
+        <p class="footer__title">Terminal Intermunicipal de Transporte de Pasajeros de Vélez</p>
+        <p>Propuesta académica · Grupo 5 · Administración para Ingenieros · Semestre 2026B.</p>
+        <p>La propuesta no representa una obra aprobada ni en construcción.</p>
+      </div>
+      <div>
+        <p class="footer__title">Fuentes</p>
+        <p>Formulación y planeación del proyecto; Contexto y beneficiarios; Organización y dirección; planta, vista isométrica y cuadro de medidas de la maqueta. Cita del Plan de Desarrollo Municipal de Vélez 2024–2027 tomada del documento de formulación.</p>
+      </div>
+    </div>
+  </footer>
+
+  <button type="button" class="to-top" id="to-top" aria-label="Volver arriba" hidden><i data-lucide="arrow-up" class="ico"></i></button>
+
+  <!-- Visor de imágenes -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada" hidden>
+    <button type="button" class="lightbox__close round-btn round-btn--dark" data-lb="close" aria-label="Cerrar"><i data-lucide="x" class="ico"></i></button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev round-btn round-btn--dark" data-lb="prev" aria-label="Imagen anterior"><i data-lucide="chevron-left" class="ico"></i></button>
+    <figure class="lightbox__figure">
+      <img id="lightbox-img" alt="">
+      <figcaption id="lightbox-cap"></figcaption>
+    </figure>
+    <button type="button" class="lightbox__nav lightbox__nav--next round-btn round-btn--dark" data-lb="next" aria-label="Imagen siguiente"><i data-lucide="chevron-right" class="ico"></i></button>
+  </div>
+
+  <noscript><p class="noscript">Este sitio necesita JavaScript para mostrar el modelo 3D interactivo. El resto del contenido está disponible sin él.</p></noscript>
+</body>
+</html>
