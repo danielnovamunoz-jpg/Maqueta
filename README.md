@@ -102,6 +102,15 @@ La sección «Viabilidad y presupuesto» usa la estimación ajustada del Entrega
 - **Sin AIU:** no se suma porque el referente ya es un costo total.
 - **Detalles desplegables:** índices de actualización, ajuste frente a la formulación inicial ($11.934 M → ≈ $13.030 M), limitaciones y riesgos.
 
+## ODS 9 (sección 08)
+
+La sección «Objetivos de Desarrollo Sostenible» presenta la alineación del proyecto con el **ODS 9: Industria, innovación e infraestructura**. La portada también la enlaza con la etiqueta «Alineado con el ODS 9».
+
+- **Información general:** viene de la Agenda 2030 de las Naciones Unidas (17 objetivos y 169 metas, adoptados en 2015) y del documento CONPES 3918 de 2018. Incluye el enunciado del ODS 9 y el texto de la meta 9.1.
+- **Aporte de la terminal:** se relaciona con la meta 9.1 usando solo información ya documentada en el proyecto: espacios, conectividad regional, población del área de influencia, despachos centralizados, locales y beneficiarios.
+- **Por fortalecer:** los documentos del proyecto no definen criterios de sostenibilidad ni de resiliencia. La página los presenta como una recomendación para los diseños detallados, no como características de la propuesta.
+- **Nota:** ninguno de los documentos de origen menciona los ODS. La relación es un análisis académico del equipo, no una certificación.
+
 ## Observaciones sobre las fuentes
 
 - **Sitio del predio:** el Entregable 2 dice que el sitio exacto aún no está definido, pero el sitio web muestra las coordenadas definidas por el equipo. Conviene unificarlo en el documento.
