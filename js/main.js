@@ -2,8 +2,8 @@
    Terminal Intermunicipal de Vélez – Interacción general del sitio
    ========================================================================== */
 import {
-  SPACES, SPACE_BY_ID, ZONES, DISTRIBUTION, DIMENSION_ROWS, TOUR_ORDER,
-  NOTA_CONCEPTUAL, PLATFORM_ANGLE, PLATFORM_SIZE
+  SPACES, SPACE_BY_ID, ZONES, DISTRIBUTION, TOUR_ORDER,
+  NOTA_CONCEPTUAL, PLATFORM_ANGLE, PLATFORM_SIZE, BOARD
 } from './spaces.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -119,19 +119,6 @@ function observeReveals(root = document) {
 /* ==========================================================================
    Utilidades de planta 2D (zonificación y plano alternativo)
    ========================================================================== */
-const nums = s => (String(s).match(/\d+(?:,\d+)?/g) || []).map(x => parseFloat(x.replace(',', '.')));
-function hasDiscrepancy(m) {
-  if (!m || m.cuadro === '—') return false;
-  const c = nums(m.cuadro), p = nums(m.planta), b = nums(m.boceto);
-  let diff = false;
-  if (m.planta !== '—' && p.length) {
-    if (p.length >= 2) diff = [...c].sort().join() !== [...p].sort().join();
-    else diff = !c.includes(p[0]);
-  }
-  if (b.length && c.length >= 2 && Math.abs(c[0] * c[1] - b[0]) > 0.5) diff = true;
-  return diff;
-}
-
 const EXT_FILL = { plaza: '#E8DCC5', parqueadero: '#AEB5BE', motos: '#AEB5BE', acopio: '#E3D9BF', bahia: '#E3D9BF', vias: '#C3C8CF', verdes: '#A9C98A' };
 const ORDER_2D = ['verdes', 'vias', 'plataformas', 'parqueadero', 'motos', 'plaza', 'acopio', 'bahia'];
 
@@ -143,9 +130,11 @@ function buildPlanSVG(mode) {
   const zoning = mode === 'zoning';
   const cls = zoning ? 'zn-space' : 'p2d-space';
   const parts = [];
-  parts.push(`<svg viewBox="-0.5 -0.5 71 61" xmlns="http://www.w3.org/2000/svg" role="${zoning ? 'img' : 'group'}" aria-label="${zoning ? 'Zonificación de la terminal' : 'Plano 2D interactivo de la terminal'}">`);
-  parts.push(`<rect x="-0.5" y="-0.5" width="71" height="61" rx="1.2" fill="#2B3038"/>`);
-  parts.push(`<rect x="0" y="0" width="70" height="60" fill="${zoning ? '#EEF1F4' : '#BFD6A6'}"/>`);
+  const { x0: bx0, x1: bx1, z0: bz0, z1: bz1 } = BOARD;
+  const bw = bx1 - bx0, bd = bz1 - bz0;
+  parts.push(`<svg viewBox="${bx0 - 0.5} ${bz0 - 0.5} ${bw + 1} ${bd + 1}" xmlns="http://www.w3.org/2000/svg" role="${zoning ? 'img' : 'group'}" aria-label="${zoning ? 'Zonificación de la terminal' : 'Plano 2D interactivo de la terminal'}">`);
+  parts.push(`<rect x="${bx0 - 0.5}" y="${bz0 - 0.5}" width="${bw + 1}" height="${bd + 1}" rx="1.2" fill="#2B3038"/>`);
+  parts.push(`<rect x="${bx0}" y="${bz0}" width="${bw}" height="${bd}" fill="${zoning ? '#EEF1F4' : '#BFD6A6'}"/>`);
   parts.push(`<rect x="9.0" y="11.6" width="58.6" height="26.8" fill="${zoning ? '#E3E7EC' : '#DCD8CF'}"/>`);
 
   const fillFor = s => {
@@ -189,6 +178,8 @@ function buildPlanSVG(mode) {
   if (!zoning) {
     parts.push(`<text x="7.3" y="59.3" text-anchor="middle" class="p2d-text p2d-text--small" fill="#0F2742">Entrada ↑</text>`);
     parts.push(`<text x="66" y="59.3" text-anchor="middle" class="p2d-text p2d-text--small" fill="#0F2742">Salida ↓</text>`);
+    parts.push(`<text x="8" y="-7.4" text-anchor="middle" class="p2d-text p2d-text--small" fill="#0F2742">Entrada buses →</text>`);
+    parts.push(`<text x="62" y="-7.4" text-anchor="middle" class="p2d-text p2d-text--small" fill="#0F2742">Salida buses →</text>`);
   }
   parts.push('</svg>');
   return parts.join('');
@@ -237,25 +228,6 @@ function buildPlanSVG(mode) {
     const g = e.target.closest('.zn-space');
     if (g) setFocus(g.dataset.zone);
   });
-})();
-
-/* ==========================================================================
-   F · Cuadro de dimensiones
-   ========================================================================== */
-(function dimensionsTable() {
-  const tbody = $('#dims-table tbody');
-  if (!tbody) return;
-  tbody.innerHTML = DIMENSION_ROWS.map(row => {
-    const s = SPACE_BY_ID[row.id];
-    const m = s.medidas;
-    const warn = hasDiscrepancy(m);
-    return `<tr>
-      <td data-label="Espacio"><button type="button" class="row-btn" data-goto="${row.id}" aria-label="Ver ${esc(row.label)} en el modelo 3D">${esc(row.label)}</button>${warn ? ' <span class="badge badge--warn">Verificar</span>' : ''}</td>
-      <td data-label="Cuadro de medidas (cm)" class="num">${esc(m.cuadro)}</td>
-      <td data-label="Cota en planta (cm)" class="num">${esc(m.planta)}</td>
-      <td data-label="Boceto preliminar" class="num">${esc(m.boceto)}</td>
-    </tr>`;
-  }).join('');
 })();
 
 /* ==========================================================================
@@ -490,21 +462,6 @@ function closeSheet({ clear = true } = {}) {
   }
 }
 
-function measuresHTML(s) {
-  const m = s.medidas;
-  if (!m || (m.cuadro === '—' && m.planta === '—' && m.boceto === '—')) return '';
-  const warn = hasDiscrepancy(m);
-  return `<section>
-    <h4>Medidas de referencia ${warn ? '<span class="badge badge--warn">Verificar</span>' : ''}</h4>
-    <dl class="measures">
-      <div><dt>Cuadro de medidas (cm)</dt><dd>${esc(m.cuadro)}</dd></div>
-      <div><dt>Cota en planta (cm)</dt><dd>${esc(m.planta)}</dd></div>
-      <div><dt>Boceto preliminar</dt><dd>${esc(m.boceto)}</dd></div>
-    </dl>
-    <p class="sheet__muted">Medidas de maqueta a escala 1:100. Son referencias preliminares que deben verificarse en el plano definitivo.</p>
-  </section>`;
-}
-
 function renderSpace(s, part) {
   const z = ZONES[s.zona];
   sheetBody.innerHTML = `
@@ -522,7 +479,6 @@ function renderSpace(s, part) {
         <ul class="elements">${s.elementos.map(e => `<li><i data-lucide="check" class="ico"></i><span>${esc(e)}</span></li>`).join('')}</ul>
         <p class="sheet__muted">${esc(NOTA_CONCEPTUAL)}</p>
       </section>
-      ${measuresHTML(s)}
     </div>
     <div class="sheet__actions">
       <button type="button" class="btn btn--primary btn--sm" data-sheet="back"><i data-lucide="rotate-ccw" class="ico"></i>Vista general</button>

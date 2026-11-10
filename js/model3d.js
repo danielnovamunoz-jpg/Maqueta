@@ -10,10 +10,10 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { SPACES, SPACE_BY_ID, BOARD, PLATFORM_ANGLE, PLATFORM_SIZE } from './spaces.js';
 import { buildInteriors } from './interiors.js';
 
-const BW = BOARD.largo;   // 70
-const BD = BOARD.ancho;   // 60
-const wx = x => x - BW / 2;
-const wz = z => z - BD / 2;
+const BW = BOARD.x1 - BOARD.x0;   // 70
+const BD = BOARD.z1 - BOARD.z0;   // 72 (incluye la vía exclusiva de buses al norte)
+const wx = x => x - (BOARD.x0 + BOARD.x1) / 2;
+const wz = z => z - (BOARD.z0 + BOARD.z1) / 2;
 const DEG = Math.PI / 180;
 const HIGHLIGHT = 0x1f9d63;
 const WALL_T = 0.14;
@@ -93,11 +93,11 @@ function paintGround(texW) {
     g.closePath();
   };
   const fillShape = (fn, color) => { g.beginPath(); fn(); g.fillStyle = color; g.fill(); };
-  const speckle = (count, colors, sizeMax) => {
+  const speckle = (count, colors, sizeMax, ox = 0, oy = 0) => {
     for (let i = 0; i < count; i++) {
       g.fillStyle = colors[(rnd() * colors.length) | 0];
       const s = 1 + rnd() * sizeMax;
-      g.fillRect(rnd() * texW, rnd() * texH, s, s);
+      g.fillRect(rnd() * texW + ox, rnd() * texH + oy, s, s);
     }
   };
 
@@ -105,6 +105,8 @@ function paintGround(texW) {
   g.fillStyle = '#86A85E';
   g.fillRect(0, 0, texW, texH);
   speckle(texW * 5, ['rgba(52,96,38,0.20)', 'rgba(190,214,130,0.18)', 'rgba(70,118,48,0.16)'], k * 0.09);
+  // A partir de aquí se dibuja en coordenadas de planta (el norte llega a z = BOARD.z0)
+  g.translate(-BOARD.x0 * k, -BOARD.z0 * k);
 
   // 2 · Andenes y plataforma de la edificación (concreto)
   fillShape(() => rrect(9.0, 11.6, 67.6, 38.4, [0, 0, 0, 0]), '#D7D3CA');
@@ -113,8 +115,12 @@ function paintGround(texW) {
 
   // 3 · Asfalto con bordillos
   const roads = [
-    () => rrect(5.6, 3.2, 67.6, 11.6, [4.5, 3.0, 0, 0]),   // patio de buses
-    () => rrect(5.6, 7.0, 9.0, 60.0),                       // vía izquierda (entrada)
+    () => rrect(0, -10.2, 70, -5.4),                        // vía exclusiva de buses (entra por el oeste, sale por el este)
+    () => rrect(5.6, -5.4, 12.0, -3.4),                     // acceso de buses al patio
+    () => rrect(60.0, -5.4, 67.6, -3.4),                    // salida de buses del patio
+    () => rrect(5.6, -3.6, 67.6, 11.6),                     // patio de maniobras y plataformas
+    () => rrect(5.6, 22.2, 9.0, 60.0),                      // vía izquierda (solo vehículos y taxis)
+    () => rrect(5.2, 20.2, 9.2, 24.2, 2.0),                 // retorno al final de la vía de vehículos
     () => rrect(9.0, 38.4, 22.9, 42.6),                     // vía frontal izquierda
     () => rrect(9.0, 42.6, 64.0, 55.6, [0, 0, 2.2, 2.2]),  // parqueaderos
     () => rrect(45.1, 38.4, 68.0, 42.6, [0, 2.0, 0, 0]),   // vía frontal derecha
@@ -128,7 +134,7 @@ function paintGround(texW) {
   roads.forEach(fn => { g.beginPath(); fn(); g.fill(); });
   g.save();
   g.beginPath(); roads.forEach(fn => fn()); g.clip();
-  speckle(texW * 3, ['rgba(255,255,255,0.05)', 'rgba(0,0,0,0.08)'], k * 0.06);
+  speckle(texW * 3, ['rgba(255,255,255,0.05)', 'rgba(0,0,0,0.08)'], k * 0.06, BOARD.x0 * k, BOARD.z0 * k);
   g.restore();
 
   // Plaza redibujada por encima del borde del parqueadero + retícula
@@ -145,7 +151,8 @@ function paintGround(texW) {
     [9.3, 42.9, 13.2, 47.2], [9.3, 51.2, 13.2, 55.3],
     [42.75, 42.9, 45.25, 47.2], [42.75, 51.2, 45.25, 55.3],
     [61.4, 42.9, 63.8, 47.2], [61.4, 51.2, 63.8, 55.3],
-    [9.3, 29.2, 10.9, 38.1], [9.8, 29.25, 25.6, 30.35], [44.4, 29.25, 65.8, 30.35]
+    [9.3, 29.2, 10.9, 38.1], [9.8, 29.25, 25.6, 30.35], [44.4, 29.25, 65.8, 30.35],
+    [12.3, -5.3, 59.7, -3.7]                                 // separador entre la vía de buses y el patio
   ];
   planters.forEach(([a, b, c2, d]) => {
     g.beginPath(); rrect(a, b, c2, d, 0.5);
@@ -179,11 +186,16 @@ function paintGround(texW) {
     g.strokeStyle = color; g.lineWidth = P(w);
     g.beginPath(); g.moveTo(P(x0), P(z0)); g.lineTo(P(x1), P(z1)); g.stroke();
   };
-  dash(7.3, 13.0, 7.3, 57.6);
+  dash(7.3, 25.0, 7.3, 57.6);
   dash(9.6, 40.5, 22.5, 40.5);
   dash(45.6, 40.5, 63.4, 40.5);
   dash(66.0, 43.2, 66.0, 57.6);
-  dash(10.5, 7.4, 66.5, 7.4, 1.0, 0.8, 0.1, 'rgba(245,245,240,0.35)');
+  dash(0.6, -7.8, 69.4, -7.8);                                                // carriles de la vía de buses
+  line(0, -10.0, 70, -10.0, 0.1, 'rgba(231,183,58,0.9)');
+  line(0, -5.6, 5.6, -5.6, 0.1, 'rgba(231,183,58,0.9)');
+  line(12.0, -5.6, 60.0, -5.6, 0.1, 'rgba(231,183,58,0.9)');
+  line(67.6, -5.6, 70, -5.6, 0.1, 'rgba(231,183,58,0.9)');
+  dash(12.5, 0.2, 59.5, 0.2, 1.0, 0.8, 0.1, 'rgba(245,245,240,0.5)');          // límite del carril de maniobra
 
   // Pasos peatonales
   const zebraH = (x0, x1, z0, z1) => { for (let z = z0; z < z1; z += 0.7) { g.fillStyle = white; g.fillRect(P(x0), P(z), P(x1 - x0), P(0.35)); } };
@@ -219,9 +231,20 @@ function paintGround(texW) {
     g.lineTo(L / 2, 0); g.lineTo(L / 2 - H, H * 0.7); g.lineTo(L / 2 - H, Wd / 2); g.lineTo(-L / 2, Wd / 2);
     g.closePath(); g.fill(); g.restore();
   };
-  arrow(8.15, 52, -90); arrow(8.15, 30, -90); arrow(6.45, 20, 90);
+  arrow(8.15, 52, -90); arrow(8.15, 30, -90); arrow(6.45, 34, 90);
   arrow(15.5, 41.5, 0); arrow(55, 41.5, 0); arrow(66.9, 50, 90); arrow(65.1, 54, 90);
-  arrow(36.6, 4.9, 0, 2.6); arrow(28, 49.2, 0); arrow(53, 49.2, 0);
+  arrow(28, 49.2, 0); arrow(53, 49.2, 0);
+  // Circulación de buses: entrada (oeste) → patio de maniobras → salida (este)
+  [[20, -9.0], [20, -6.6], [48, -9.0], [48, -6.6]].forEach(([x, z]) => arrow(x, z, 0, 2.6));
+  arrow(8.8, -4.4, 90, 2.0);
+  arrow(24, -1.7, 0, 2.6); arrow(46, -1.7, 0, 2.6);
+  arrow(63.8, -4.4, -90, 2.0);
+  g.fillStyle = 'rgba(245,245,240,0.92)';
+  g.font = `800 ${P(0.95)}px Inter, Arial, sans-serif`;
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText('SOLO BUSES', P(9.5), P(-9.0));
+  g.fillText('SOLO BUSES', P(34), P(-6.6));
+  g.fillText('SOLO BUSES', P(60), P(-9.0));
 
   // Plataformas: líneas inclinadas, borde amarillo del andén y rótulos B1–B6
   const a = PLATFORM_ANGLE * DEG;
@@ -233,8 +256,8 @@ function paintGround(texW) {
     [-1, 1].forEach(sgn => {
       const ox = p.cx + perp[0] * 2.05 * sgn, oz = p.cz + perp[1] * 2.05 * sgn;
       g.beginPath();
-      g.moveTo(P(ox - dir[0] * 4.4), P(oz - dir[1] * 4.4));
-      g.lineTo(P(ox + dir[0] * 4.15), P(oz + dir[1] * 4.15));
+      g.moveTo(P(ox - dir[0] * 5.2), P(oz - dir[1] * 5.2));
+      g.lineTo(P(ox + dir[0] * 4.95), P(oz + dir[1] * 4.95));
       g.stroke();
     });
   });
@@ -242,7 +265,7 @@ function paintGround(texW) {
   g.fillStyle = 'rgba(255,255,255,0.95)';
   g.font = `800 ${P(1.25)}px Manrope, Inter, Arial, sans-serif`;
   g.textAlign = 'center'; g.textBaseline = 'middle';
-  plat.partes.forEach(p => g.fillText(p.id, P(p.cx - 1.75), P(9.35)));
+  plat.partes.forEach(p => g.fillText(p.id, P(p.cx - 1.95), P(9.7)));
 
   return c;
 }
@@ -338,7 +361,7 @@ export async function createViewer(stage, options = {}) {
     sun.castShadow = true;
     sun.shadow.mapSize.set(Q.shadowSize, Q.shadowSize);
     const sc = sun.shadow.camera;
-    sc.left = -46; sc.right = 46; sc.top = 44; sc.bottom = -44; sc.near = 20; sc.far = 170;
+    sc.left = -48; sc.right = 48; sc.top = 50; sc.bottom = -50; sc.near = 20; sc.far = 180;
     sun.shadow.bias = -0.0004;
     sun.shadow.normalBias = 0.04;
   }
@@ -565,10 +588,12 @@ export async function createViewer(stage, options = {}) {
   const trees = [];
   const shrubs = [];
   const step = 3.0 * Q.treeStep;
-  for (let x = 1.6; x < 69; x += step) trees.push([x + (rndT() - 0.5) * 0.6, 1.5 + (rndT() - 0.5) * 0.6, 1.0 + rndT() * 0.45]);
-  for (let z = 4.8; z < 23.5; z += step) trees.push([1.2 + (rndT() - 0.5) * 0.3, z, 0.95 + rndT() * 0.35]);
-  for (let z = 6.0; z < 23; z += step * 1.3) trees.push([3.9, z + 1.2, 0.8 + rndT() * 0.3]);
-  for (let z = 4.8; z < 57.5; z += step) trees.push([68.85 + (rndT() - 0.5) * 0.25, z, 0.85 + rndT() * 0.35]);
+  for (let x = 1.6; x < 69; x += step) trees.push([x + (rndT() - 0.5) * 0.6, -11.1 + (rndT() - 0.5) * 0.3, 0.85 + rndT() * 0.35]);
+  for (let z = -3.8; z < 23.5; z += step) trees.push([1.2 + (rndT() - 0.5) * 0.3, z, 0.95 + rndT() * 0.35]);
+  for (let z = -2.8; z < 21; z += step * 1.3) trees.push([3.9, z + 1.2, 0.8 + rndT() * 0.3]);
+  for (let z = -3.8; z < 57.5; z += step) trees.push([68.85 + (rndT() - 0.5) * 0.25, z, 0.85 + rndT() * 0.35]);
+  for (let x = 14.5; x < 58.5; x += 4.4) trees.push([x, -4.5, 0.55 + rndT() * 0.15]);   // separador vía de buses / patio
+  [[7.3, 13.6], [7.3, 17.0]].forEach(([x, z]) => trees.push([x, z, 0.8 + rndT() * 0.2]));
   for (let x = 11.0; x < 63.5; x += step) trees.push([x + (rndT() - 0.5) * 0.5, 57.0 + (rndT() - 0.5) * 0.4, 0.95 + rndT() * 0.4]);
   [[11.2, 44.0], [11.2, 46.3], [11.2, 52.3], [11.2, 54.4], [44.0, 45.0], [44.0, 53.2], [62.6, 45.0], [62.6, 53.2], [10.1, 31.0], [10.1, 34.6], [10.1, 37.2], [3.1, 41.3]]
     .forEach(([x, z]) => trees.push([x, z, 0.75 + rndT() * 0.25]));
@@ -601,18 +626,20 @@ export async function createViewer(stage, options = {}) {
 
   /* ---------- Vehículos (instanciados) ---------- */
   const a = PLATFORM_ANGLE * DEG;
-  const buses = SPACE_BY_ID.plataformas.partes;
+  const buses = SPACE_BY_ID.plataformas.partes.map(p => ({ x: p.cx, z: p.cz, rot: a }));
+  buses.push({ x: 31.0, z: -9.0, rot: Math.PI / 2 });   // bus llegando por la vía exclusiva
+  buses.push({ x: 62.6, z: -3.0, rot: 120 * DEG });     // bus saliendo del patio hacia la vía
   const busParts = [
-    { size: [2.2, 0.5, 7.6], y: 0.25, color: 0x23262b },
-    { size: [2.4, 2.1, 8.2], y: 1.5, color: 0xf5f6f8 },
-    { size: [2.46, 0.75, 7.9], y: 2.05, color: 0x2b394a },
-    { size: [2.44, 0.22, 8.22], y: 0.95, color: 0x1f8f5f },
-    { size: [2.1, 0.12, 6.6], y: 2.62, color: 0xdfe3e8 }
+    { size: [2.2, 0.5, 9.3], y: 0.25, color: 0x23262b },
+    { size: [2.4, 2.1, 10.0], y: 1.5, color: 0xf5f6f8 },
+    { size: [2.46, 0.75, 9.7], y: 2.05, color: 0x2b394a },
+    { size: [2.44, 0.22, 10.02], y: 0.95, color: 0x1f8f5f },
+    { size: [2.1, 0.12, 8.2], y: 2.62, color: 0xdfe3e8 }
   ];
   busParts.forEach(part => {
     const im = new THREE.InstancedMesh(new THREE.BoxGeometry(...part.size), new THREE.MeshLambertMaterial({ color: part.color }), buses.length);
     buses.forEach((b, i) => {
-      dummy.position.set(wx(b.cx), part.y, wz(b.cz)); dummy.rotation.set(0, a, 0); dummy.scale.set(1, 1, 1); dummy.updateMatrix();
+      dummy.position.set(wx(b.x), part.y, wz(b.z)); dummy.rotation.set(0, b.rot, 0); dummy.scale.set(1, 1, 1); dummy.updateMatrix();
       im.setMatrixAt(i, dummy.matrix);
     });
     im.castShadow = Q.shadows;
@@ -703,8 +730,13 @@ export async function createViewer(stage, options = {}) {
   SPACES.forEach(s => {
     const [x0, z0, x1, z1] = s.rects[0];
     if (s.tipo === 'room') addLabel(s.id, s.corto, (x0 + x1) / 2, (z0 + z1) / 2, s.altura + 0.4, 'room');
-    else if (s.id === 'vias') { addLabel(s.id, 'Entrada', 7.3, 58.6, 0.4, 'ext'); addLabel(s.id, 'Salida', 66.0, 58.6, 0.4, 'ext'); }
-    else if (s.id === 'plataformas') addLabel(s.id, 'Plataformas B1–B6', 36.6, 4.6, 3.4, 'ext');
+    else if (s.id === 'vias') {
+      addLabel(s.id, 'Entrada vehículos', 7.3, 58.6, 0.4, 'ext');
+      addLabel(s.id, 'Salida vehículos', 66.0, 58.6, 0.4, 'ext');
+      addLabel(s.id, 'Entrada buses', 3.8, -7.8, 0.4, 'ext');
+      addLabel(s.id, 'Salida buses', 66.2, -7.8, 0.4, 'ext');
+    }
+    else if (s.id === 'plataformas') addLabel(s.id, 'Patio de maniobras · B1–B6', 36.6, -1.0, 3.2, 'ext');
     else if (s.id !== 'verdes') addLabel(s.id, s.corto, (x0 + x1) / 2, (z0 + z1) / 2, 0.6, 'ext');
   });
 
@@ -1033,7 +1065,7 @@ export async function createViewer(stage, options = {}) {
   controls.addEventListener('change', () => {
     const t = controls.target;
     t.x = THREE.MathUtils.clamp(t.x, -42, 42);
-    t.z = THREE.MathUtils.clamp(t.z, -36, 36);
+    t.z = THREE.MathUtils.clamp(t.z, -40, 40);
     t.y = THREE.MathUtils.clamp(t.y, 0, 8);
     requestRender();
   });

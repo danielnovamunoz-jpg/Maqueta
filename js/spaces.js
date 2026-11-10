@@ -1,16 +1,14 @@
 /* ==========================================================================
    Datos de los espacios de la terminal (fuente única para el visor 3D,
-   el plano 2D alternativo, la distribución y el cuadro de dimensiones).
+   el plano 2D alternativo y la sección de distribución).
 
-   Coordenadas en planta: centímetros de la maqueta (escala 1:100).
-   X: 0 → 70 (izquierda → derecha) · Z: 0 → 60 (arriba/plataformas → abajo/acceso).
-   Las posiciones siguen la distribución DIBUJADA en la planta de referencia,
-   normalizada al tablero de 70 × 60 cm. Las cotas escritas en la planta y en el
-   cuadro de medidas no son proporcionales entre sí; por eso se conservan como
-   referencias preliminares en `medidas` y no se usan para modelar.
+   Coordenadas en planta (unidades del modelo): X 0 → 70 (izquierda → derecha),
+   Z −12 → 60 (norte/vía de buses → sur/acceso). Las posiciones siguen la
+   distribución dibujada en la planta de referencia; el modelo es conceptual
+   y no está a escala.
    ========================================================================== */
 
-export const BOARD = { largo: 70, ancho: 60, escala: '1:100', alturaEdificio: 4.5 };
+export const BOARD = { x0: 0, x1: 70, z0: -12, z1: 60, alturaEdificio: 4.5 };
 
 export const ZONES = {
   operativa: {
@@ -47,11 +45,8 @@ export const NOTA_CONCEPTUAL =
   tipo:  'room'     → recinto de la edificación (con muros y cubierta)
          'ground'   → zona exterior a nivel del terreno
          'platform' → plataformas de buses (partes rotadas B1–B6)
-  rects: [x0, z0, x1, z1] en cm de planta.
+  rects: [x0, z0, x1, z1] en unidades de planta.
   bloque: agrupación de cubierta (A, B, C, D, E, F).
-  medidas.cuadro  → "Cuadro de medidas de los espacios (en la maqueta)".
-  medidas.planta  → cota escrita sobre la planta general de la maqueta.
-  medidas.boceto  → área indicada en el boceto preliminar (Formulación, Fig. 2).
 */
 export const SPACES = [
   /* ---------------- EDIFICACIÓN ---------------- */
@@ -66,8 +61,7 @@ export const SPACES = [
     altura: 4.5,
     piso: '#EFE7D8',
     funcion: 'Espacio destinado a la permanencia de los pasajeros mientras esperan la salida de sus vehículos.',
-    elementos: ['Sillas de espera', 'Circulación peatonal', 'Acceso a las demás áreas', 'Conexión con las plataformas de buses', 'Pantallas de información de salidas'],
-    medidas: { cuadro: '14,0 × 10,0', planta: '14,0 × 10,0', boceto: '140 m²' }
+    elementos: ['Sillas de espera', 'Circulación peatonal', 'Acceso a las demás áreas', 'Conexión con las plataformas de buses', 'Pantallas de información de salidas']
   },
   {
     id: 'equipajes',
@@ -80,8 +74,7 @@ export const SPACES = [
     altura: 3.6,
     piso: '#F2D6D1',
     funcion: 'Espacio destinado a la recepción y organización de equipajes y encomiendas.',
-    elementos: ['Mostrador de recepción y entrega con báscula', 'Estanterías para organizar equipajes y encomiendas', 'Carros portaequipajes', 'Conexión con la sala de espera y las plataformas'],
-    medidas: { cuadro: '6,0 × 5,0', planta: '5,0 (ancho indicado)', boceto: '60 m²' }
+    elementos: ['Mostrador de recepción y entrega con báscula', 'Estanterías para organizar equipajes y encomiendas', 'Carros portaequipajes', 'Conexión con la sala de espera y las plataformas']
   },
   {
     id: 'sanitarios',
@@ -94,8 +87,7 @@ export const SPACES = [
     altura: 3.6,
     piso: '#D3E2F3',
     funcion: 'Ofrecer servicios sanitarios a los usuarios de la terminal.',
-    elementos: ['Baterías sanitarias diferenciadas para hombres y mujeres', 'Cabinas con inodoros y orinales', 'Lavamanos con espejos', 'Acceso desde la sala de espera general'],
-    medidas: { cuadro: '5,0 × 5,0', planta: '5,0 × 5,0', boceto: '50 m²' }
+    elementos: ['Baterías sanitarias diferenciadas para hombres y mujeres', 'Cabinas con inodoros y orinales', 'Lavamanos con espejos', 'Acceso desde la sala de espera general']
   },
   {
     id: 'conductores',
@@ -108,8 +100,7 @@ export const SPACES = [
     altura: 3.6,
     piso: '#DAEBCB',
     funcion: 'Espacio de uso operativo destinado a los conductores de las empresas transportadoras.',
-    elementos: ['Área de permanencia', 'Servicios de apoyo', 'Conexión con las áreas operativas', 'Mesas, casilleros y estación de café'],
-    medidas: { cuadro: '6,0 × 5,0', planta: '5,0 × 5,0', boceto: '60 m²' }
+    elementos: ['Área de permanencia', 'Servicios de apoyo', 'Conexión con las áreas operativas', 'Mesas, casilleros y estación de café']
   },
   {
     id: 'descanso',
@@ -122,8 +113,7 @@ export const SPACES = [
     altura: 3.6,
     piso: '#F5EBC4',
     funcion: 'Espacio de descanso para los conductores, vinculado al área de conductores.',
-    elementos: ['Sofás y sillones de descanso', 'Mesa de centro y televisor', 'Conexión con el área de conductores', 'Cercanía a baños y duchas'],
-    medidas: { cuadro: '4,0 × 4,0', planta: '4,0 × 4,0', boceto: '40 m²' }
+    elementos: ['Sofás y sillones de descanso', 'Mesa de centro y televisor', 'Conexión con el área de conductores', 'Cercanía a baños y duchas']
   },
   {
     id: 'banos',
@@ -136,8 +126,7 @@ export const SPACES = [
     altura: 3.6,
     piso: '#E0D8F1',
     funcion: 'Espacio de aseo ubicado en la zona operativa, junto al área de conductores y la sala de descanso.',
-    elementos: ['Duchas con mampara', 'Inodoros en cabinas', 'Lavamanos con espejo', 'Banca y casilleros', 'Conexión con la sala de descanso'],
-    medidas: { cuadro: '3,0 × 3,0', planta: '3,0 × 4,0', boceto: '30 m²' }
+    elementos: ['Duchas con mampara', 'Inodoros en cabinas', 'Lavamanos con espejo', 'Banca y casilleros', 'Conexión con la sala de descanso']
   },
   {
     id: 'alimentacion',
@@ -150,8 +139,7 @@ export const SPACES = [
     altura: 3.6,
     piso: '#F6DEC3',
     funcion: 'Espacio destinado a ofrecer alimentos y bebidas a los usuarios.',
-    elementos: ['Mostrador de venta con vitrina', 'Cocina de apoyo', 'Barra y mesas para el consumo', 'Acceso desde la sala de espera'],
-    medidas: { cuadro: '4,0 × 4,0', planta: '4,0 y 4,0 (dos tramos)', boceto: '40 m²' }
+    elementos: ['Mostrador de venta con vitrina', 'Cocina de apoyo', 'Barra y mesas para el consumo', 'Acceso desde la sala de espera']
   },
   {
     id: 'taquillas',
@@ -164,8 +152,7 @@ export const SPACES = [
     altura: 3.2,
     piso: '#F4D5D7',
     funcion: 'Espacio destinado a la atención de usuarios y gestión de los servicios de transporte.',
-    elementos: ['Módulos de atención', 'Mostradores', 'Espacios de circulación', 'Ventanillas con la señalización de cada empresa', 'Filas de atención frente a cada módulo'],
-    medidas: { cuadro: '5,0 × 4,0', planta: '8,0 (alto indicado)', boceto: '90 m²' }
+    elementos: ['Módulos de atención', 'Mostradores', 'Espacios de circulación', 'Ventanillas con la señalización de cada empresa', 'Filas de atención frente a cada módulo']
   },
   {
     id: 'vestibulo',
@@ -178,40 +165,35 @@ export const SPACES = [
     altura: 4.0,
     piso: '#ECE3D3',
     funcion: 'Espacio de acceso que recibe a los usuarios desde la plaza peatonal y los distribuye hacia las taquillas, los locales y la sala de espera.',
-    elementos: ['Acceso principal desde la plaza', 'Punto de orientación e información', 'Tablero de salidas y tótems de orientación', 'Distribución hacia taquillas, locales y sala de espera'],
-    medidas: { cuadro: '12,0 × 6,0', planta: '12,0 × 6,0', boceto: '120 m²' }
+    elementos: ['Acceso principal desde la plaza', 'Punto de orientación e información', 'Tablero de salidas y tótems de orientación', 'Distribución hacia taquillas, locales y sala de espera']
   },
   {
     id: 'local1', nombre: 'Local comercial 1', corto: 'Local 1', grupo: 'locales',
     zona: 'comercial', tipo: 'room', bloque: 'F',
     rects: [[44.2, 30.6, 49.65, 37.6]], altura: 3.2, piso: '#F1E7D6',
     funcion: 'Espacio destinado a actividades comerciales complementarias.',
-    elementos: ['Local independiente', 'Estanterías y mostrador de atención', 'Frente hacia la circulación peatonal de acceso', 'Atención a usuarios, conductores y trabajadores'],
-    medidas: { cuadro: '3,0 × 3,0 c/u', planta: '3,0 c/u', boceto: '30 m² c/u' }
+    elementos: ['Local independiente', 'Estanterías y mostrador de atención', 'Frente hacia la circulación peatonal de acceso', 'Atención a usuarios, conductores y trabajadores']
   },
   {
     id: 'local2', nombre: 'Local comercial 2', corto: 'Local 2', grupo: 'locales',
     zona: 'comercial', tipo: 'room', bloque: 'F',
     rects: [[49.65, 30.6, 55.1, 37.6]], altura: 3.2, piso: '#F1E7D6',
     funcion: 'Espacio destinado a actividades comerciales complementarias.',
-    elementos: ['Local independiente', 'Estanterías y mostrador de atención', 'Frente hacia la circulación peatonal de acceso', 'Atención a usuarios, conductores y trabajadores'],
-    medidas: { cuadro: '3,0 × 3,0 c/u', planta: '3,0 c/u', boceto: '30 m² c/u' }
+    elementos: ['Local independiente', 'Estanterías y mostrador de atención', 'Frente hacia la circulación peatonal de acceso', 'Atención a usuarios, conductores y trabajadores']
   },
   {
     id: 'local3', nombre: 'Local comercial 3', corto: 'Local 3', grupo: 'locales',
     zona: 'comercial', tipo: 'room', bloque: 'F',
     rects: [[55.1, 30.6, 60.55, 37.6]], altura: 3.2, piso: '#F1E7D6',
     funcion: 'Espacio destinado a actividades comerciales complementarias.',
-    elementos: ['Local independiente', 'Estanterías y mostrador de atención', 'Frente hacia la circulación peatonal de acceso', 'Atención a usuarios, conductores y trabajadores'],
-    medidas: { cuadro: '3,0 × 3,0 c/u', planta: '3,0 c/u', boceto: '30 m² c/u' }
+    elementos: ['Local independiente', 'Estanterías y mostrador de atención', 'Frente hacia la circulación peatonal de acceso', 'Atención a usuarios, conductores y trabajadores']
   },
   {
     id: 'local4', nombre: 'Local comercial 4', corto: 'Local 4', grupo: 'locales',
     zona: 'comercial', tipo: 'room', bloque: 'F',
     rects: [[60.55, 30.6, 66.0, 37.6]], altura: 3.2, piso: '#F1E7D6',
     funcion: 'Espacio destinado a actividades comerciales complementarias.',
-    elementos: ['Local independiente', 'Estanterías y mostrador de atención', 'Frente hacia la circulación peatonal de acceso', 'Atención a usuarios, conductores y trabajadores'],
-    medidas: { cuadro: '3,0 × 3,0 c/u', planta: '3,0 c/u', boceto: '30 m² c/u' }
+    elementos: ['Local independiente', 'Estanterías y mostrador de atención', 'Frente hacia la circulación peatonal de acceso', 'Atención a usuarios, conductores y trabajadores']
   },
 
   /* ---------------- EXTERIORES ---------------- */
@@ -221,18 +203,17 @@ export const SPACES = [
     corto: 'Plataformas B1–B6',
     zona: 'operativa',
     tipo: 'platform',
-    rects: [[5.6, 3.2, 67.6, 11.6]],
+    rects: [[5.6, -3.6, 67.6, 11.6]],
     partes: [
-      { id: 'B1', cx: 16.2, cz: 7.4 },
-      { id: 'B2', cx: 24.5, cz: 7.4 },
-      { id: 'B3', cx: 32.8, cz: 7.4 },
-      { id: 'B4', cx: 41.1, cz: 7.4 },
-      { id: 'B5', cx: 49.4, cz: 7.4 },
-      { id: 'B6', cx: 57.7, cz: 7.4 }
+      { id: 'B1', cx: 16.2, cz: 6.6 },
+      { id: 'B2', cx: 24.5, cz: 6.6 },
+      { id: 'B3', cx: 32.8, cz: 6.6 },
+      { id: 'B4', cx: 41.1, cz: 6.6 },
+      { id: 'B5', cx: 49.4, cz: 6.6 },
+      { id: 'B6', cx: 57.7, cz: 6.6 }
     ],
     funcion: 'Zona de ascenso y descenso de pasajeros y de despacho de los buses intermunicipales.',
-    elementos: ['Seis plataformas de abordaje (B1 a B6)', 'Andén de abordaje junto a la sala de espera', 'Señalización de cada plataforma', 'Circulación de buses'],
-    medidas: { cuadro: '14,0 × 3,5 c/u', planta: '3,5 (ancho) · 4,0', boceto: '—' }
+    elementos: ['Seis plataformas de abordaje (B1 a B6)', 'Andén de abordaje junto a la sala de espera', 'Señalización de cada plataforma', 'Circulación de buses']
   },
   {
     id: 'plaza',
@@ -242,8 +223,7 @@ export const SPACES = [
     tipo: 'ground',
     rects: [[22.9, 37.6, 45.1, 42.8]],
     funcion: 'Espacio peatonal exterior que antecede al vestíbulo principal y organiza la llegada de los usuarios.',
-    elementos: ['Circulación peatonal', 'Conexión con los estacionamientos', 'Vegetación y jardineras'],
-    medidas: { cuadro: '20,0 × 5,0', planta: '20,0 × 5,0', boceto: '200 m²' }
+    elementos: ['Circulación peatonal', 'Conexión con los estacionamientos', 'Vegetación y jardineras']
   },
   {
     id: 'parqueadero',
@@ -253,8 +233,7 @@ export const SPACES = [
     tipo: 'ground',
     rects: [[13.4, 42.6, 42.6, 55.6]],
     funcion: 'Organizar el parqueo de vehículos particulares.',
-    elementos: ['Celdas de estacionamiento', 'Circulación vehicular interna', 'Conexión peatonal con la plaza de acceso'],
-    medidas: { cuadro: '22,0 × 6,0', planta: '22,0 × 6,0', boceto: '650 m²' }
+    elementos: ['Celdas de estacionamiento', 'Circulación vehicular interna', 'Conexión peatonal con la plaza de acceso']
   },
   {
     id: 'motos',
@@ -264,8 +243,7 @@ export const SPACES = [
     tipo: 'ground',
     rects: [[45.4, 42.6, 61.2, 55.6]],
     funcion: 'Organizar el parqueo de motocicletas.',
-    elementos: ['Celdas para motocicletas', 'Circulación interna', 'Conexión con la vía de salida'],
-    medidas: { cuadro: '12,0 × 6,0', planta: '12,0 × 6,0', boceto: '250 m²' }
+    elementos: ['Celdas para motocicletas', 'Circulación interna', 'Conexión con la vía de salida']
   },
   {
     id: 'acopio',
@@ -275,8 +253,7 @@ export const SPACES = [
     tipo: 'ground',
     rects: [[0.6, 24.0, 5.6, 40.4]],
     funcion: 'Facilitar el servicio de transporte urbano y la conexión de los pasajeros con otros medios de movilidad.',
-    elementos: ['Área delimitada para el acopio de taxis', 'Conexión con la vía de acceso', 'Cercanía a taquillas y vestíbulo'],
-    medidas: { cuadro: '12,0 × 8,0', planta: '8,0 (ancho indicado)', boceto: '210 m²' }
+    elementos: ['Área delimitada para el acopio de taxis', 'Conexión con la vía de acceso', 'Cercanía a taquillas y vestíbulo']
   },
   {
     id: 'bahia',
@@ -286,8 +263,7 @@ export const SPACES = [
     tipo: 'ground',
     rects: [[0.6, 42.2, 5.6, 57.8]],
     funcion: 'Facilitar el servicio de transporte urbano y la conexión de los pasajeros con otros medios de movilidad.',
-    elementos: ['Bahía para ascenso y descenso en taxi', 'Conexión con la entrada vehicular', 'Separación del flujo de buses'],
-    medidas: { cuadro: '10,0 × 8,0', planta: '8,0 (ancho indicado)', boceto: '100 m²' }
+    elementos: ['Bahía para ascenso y descenso en taxi', 'Conexión con la entrada vehicular', 'Separada de la vía de buses']
   },
   {
     id: 'vias',
@@ -296,7 +272,10 @@ export const SPACES = [
     zona: 'exterior',
     tipo: 'ground',
     rects: [
-      [5.6, 11.6, 9.0, 60.0],
+      [0, -10.2, 70, -5.4],
+      [5.6, -5.4, 12.0, -3.6],
+      [60.0, -5.4, 67.6, -3.6],
+      [5.6, 21.0, 9.0, 60.0],
       [9.0, 38.4, 22.9, 42.6],
       [45.1, 38.4, 64.0, 42.6],
       [64.0, 38.4, 68.0, 60.0],
@@ -304,9 +283,8 @@ export const SPACES = [
       [42.6, 47.4, 45.4, 51.0],
       [61.2, 47.4, 64.0, 51.0]
     ],
-    funcion: 'Organizar los flujos vehiculares de acceso y salida de la terminal, separándolos de las circulaciones peatonales.',
-    elementos: ['Entrada de vehículos', 'Salida de vehículos', 'Circulación hacia plataformas, estacionamientos y zona de taxis'],
-    medidas: { cuadro: '—', planta: '—', boceto: '—' }
+    funcion: 'Organizar los flujos vehiculares de la terminal: los buses tienen una vía propia de entrada y salida, separada de los vehículos particulares, los taxis y las circulaciones peatonales.',
+    elementos: ['Entrada de vehículos', 'Salida de vehículos', 'Circulación hacia plataformas, estacionamientos y zona de taxis']
   },
   {
     id: 'verdes',
@@ -315,9 +293,11 @@ export const SPACES = [
     zona: 'exterior',
     tipo: 'ground',
     rects: [
-      [0, 0, 70, 3.2],
-      [0, 3.2, 5.6, 24.0],
-      [67.6, 3.2, 70, 38.4],
+      [0, -12, 70, -10.2],
+      [12.0, -5.4, 60.0, -3.6],
+      [0, -5.4, 5.6, 24.0],
+      [5.6, 11.6, 9.0, 21.0],
+      [67.6, -5.4, 70, 38.4],
       [68.0, 38.4, 70, 58.4],
       [9.0, 55.6, 64.0, 58.4],
       [9.0, 29.2, 11.0, 38.4],
@@ -329,8 +309,7 @@ export const SPACES = [
       [61.2, 51.0, 64.0, 55.6]
     ],
     funcion: 'Zonas verdes y arborización que acompañan las circulaciones y el entorno de la terminal.',
-    elementos: ['Arborización perimetral', 'Jardineras', 'Separación entre circulaciones'],
-    medidas: { cuadro: '—', planta: '—', boceto: '—' }
+    elementos: ['Arborización perimetral', 'Jardineras', 'Separación entre circulaciones']
   }
 ];
 
@@ -341,26 +320,6 @@ export const TOUR_ORDER = [
   'vestibulo', 'taquillas', 'sala', 'sanitarios', 'equipajes', 'plataformas',
   'conductores', 'descanso', 'banos', 'alimentacion', 'local1', 'local2', 'local3', 'local4',
   'plaza', 'parqueadero', 'motos', 'acopio', 'bahia', 'vias', 'verdes'
-];
-
-/* Filas del cuadro de dimensiones (agrupa los cuatro locales en una fila). */
-export const DIMENSION_ROWS = [
-  { id: 'sala', label: 'Sala de espera general' },
-  { id: 'equipajes', label: 'Equipajes y encomiendas' },
-  { id: 'sanitarios', label: 'Servicios sanitarios' },
-  { id: 'conductores', label: 'Área de conductores' },
-  { id: 'descanso', label: 'Sala de descanso' },
-  { id: 'banos', label: 'Baños y duchas' },
-  { id: 'alimentacion', label: 'Área de alimentación' },
-  { id: 'taquillas', label: 'Taquillas de empresas' },
-  { id: 'vestibulo', label: 'Vestíbulo principal' },
-  { id: 'local1', label: 'Locales comerciales (4)' },
-  { id: 'plaza', label: 'Plaza peatonal de acceso' },
-  { id: 'plataformas', label: 'Plataformas de buses (B1–B6)' },
-  { id: 'parqueadero', label: 'Parqueadero de vehículos' },
-  { id: 'motos', label: 'Parqueadero de motos' },
-  { id: 'acopio', label: 'Acopio de taxis' },
-  { id: 'bahia', label: 'Bahía de taxis' }
 ];
 
 /* Agrupación para la sección "Distribución arquitectónica". */
@@ -390,7 +349,7 @@ export const DISTRIBUTION = [
     { id: 'motos', label: 'Estacionamiento de motocicletas' },
     { id: 'acopio', label: 'Acopio de taxis' },
     { id: 'bahia', label: 'Bahía de taxis' },
-    { id: 'vias', label: 'Circulación vehicular' },
+    { id: 'vias', label: 'Vía de buses y circulación vehicular' },
     { id: 'verdes', label: 'Zonas verdes' },
     { id: 'plaza', label: 'Plaza peatonal de acceso' }
   ]}
@@ -398,4 +357,4 @@ export const DISTRIBUTION = [
 
 /* Ángulo de las plataformas (grados respecto al eje Z; el extremo trasero se inclina a la izquierda). */
 export const PLATFORM_ANGLE = 30;
-export const PLATFORM_SIZE = { w: 3.6, d: 8.6 };
+export const PLATFORM_SIZE = { w: 3.6, d: 10.4 };

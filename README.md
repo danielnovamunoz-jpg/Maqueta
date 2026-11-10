@@ -1,6 +1,6 @@
 # Terminal Intermunicipal de Transporte de Pasajeros de Vélez — Sitio web
 
-Sitio estático e interactivo para presentar la propuesta académica de una terminal intermunicipal en Vélez, Santander. Incluye un modelo 3D construido con Three.js a partir de la planta y la vista isométrica de la maqueta.
+Sitio estático e interactivo para presentar la propuesta académica de una terminal intermunicipal en Vélez, Santander. Incluye un modelo 3D construido con Three.js a partir de la planta y la vista isométrica de la propuesta.
 
 Tecnologías: HTML5, CSS3 y JavaScript sin frameworks. Three.js 0.160.0 y Lucide 0.460.0 se cargan desde jsDelivr y las fuentes (Inter y Manrope) desde Google Fonts. El mapa de la sección «Ubicación» es un iframe de Google Maps que no requiere clave de API. No necesita compilación ni backend.
 
@@ -22,8 +22,8 @@ Para cambiar el punto, edita las coordenadas en `index.html` (sección `#ubicaci
 /js/main.js            Navegación, menú, animaciones, galería, panel informativo y carga del visor
 /js/model3d.js         Visor 3D (Three.js): geometrías, cámara, selección por toque/clic, cubierta, interiores
 /js/interiors.js       Mobiliario y equipamiento conceptual de cada espacio (sanitarios, taquillas, duchas, estanterías…)
-/js/spaces.js          Datos de los espacios (fuente única para el 3D, el plano 2D, la distribución y las medidas)
-/assets/img/           Imágenes optimizadas en WebP (logo, maqueta, boceto, cronograma y renders del modelo 3D)
+/js/spaces.js          Datos de los espacios (fuente única para el 3D, el plano 2D y la distribución)
+/assets/img/           Imágenes optimizadas en WebP (logo, boceto, cronograma y renders del modelo 3D)
 /assets/favicon-64.png y /assets/apple-touch-icon.png   Íconos a partir del logo de Conexión Constructora
 ```
 
@@ -77,26 +77,35 @@ No hace falta un `vercel.json`. Después del despliegue, puedes cambiar `og:imag
 - **Celular:** toca el modelo para activarlo, arrastra con un dedo para girar y usa dos dedos para acercar o desplazar. Con el botón «Volver a desplazar la página» se suelta el visor. El visor también se desactiva solo al salir de la pantalla, para no bloquear el desplazamiento.
 - **Computador:** arrastra para girar y usa clic derecho para desplazar. Para que la rueda acerque, haz clic en el modelo o usa Ctrl + rueda (así la rueda no interrumpe el desplazamiento de la página).
 - **Controles:** vista general, superior, frontal y lateral; ocultar o mostrar la cubierta; ver interiores (corte de muros con etiquetas); etiquetas; reiniciar cámara; zoom; lista de espacios; visor ampliado.
-- **Selección:** cada recinto y zona exterior se puede seleccionar. Al tocar un bus se identifica su plataforma (B1–B6). El panel muestra la función, los elementos y las medidas de referencia, y permite pasar al espacio anterior o siguiente o volver a la vista general.
+- **Selección:** cada recinto y zona exterior se puede seleccionar. Al tocar un bus se identifica su plataforma (B1–B6). El panel muestra la función y los elementos de cada espacio, y permite pasar al espacio anterior o siguiente o volver a la vista general.
 - **Rendimiento:** la calidad gráfica se ajusta según el dispositivo y baja automáticamente si los cuadros por segundo caen. El render solo se ejecuta cuando hay cambios y se detiene cuando el visor no está en pantalla. Puedes forzar un nivel con `?q=low`, `?q=mid` o `?q=high` en la URL.
 - **Alternativa 2D:** el botón «Plano 2D» muestra un plano interactivo con la misma información. El sitio cambia a este plano automáticamente si el dispositivo no admite WebGL o si falla la carga de Three.js.
 
 ## Limitaciones del modelo 3D
 
-- Es una **representación conceptual**. La posición y proporción de los espacios siguen la distribución **dibujada** en la planta de referencia, normalizada al tablero de 70 × 60 cm.
-- Las cotas escritas en la planta no son proporcionales al dibujo ni coinciden siempre con el cuadro de medidas. Por eso el modelo no está a escala exacta. Las medidas se muestran aparte como referencias preliminares.
-- Para la altura se tomó como máximo la «altura aproximada del edificio» de 4,5 cm (sala de espera); los demás bloques son algo más bajos para leer los volúmenes.
-- Mobiliario, vehículos, vegetación, puertas y ventanas son ilustrativos y no corresponden a un diseño definitivo.
+- Es una **representación conceptual**: sigue la distribución de la planta de referencia y no es un modelo a escala ni un diseño definitivo.
+- Mobiliario, vehículos, vegetación, puertas y ventanas son ilustrativos.
+
+## Circulación de buses en el modelo
+
+- Los buses tienen una **vía exclusiva** al norte del terreno: entran por el oeste («Entrada buses») y salen por el este («Salida buses»), con demarcación «SOLO BUSES».
+- Un separador con árboles divide la vía del **patio de maniobras**. El patio es más profundo que antes y deja espacio libre frente a las seis plataformas para que los buses salgan.
+- La vía de vehículos particulares y taxis ya no se conecta con el patio de buses: termina en un retorno junto al acopio de taxis.
+- El modelo muestra un bus llegando por la vía exclusiva y otro saliendo del patio.
+
+## Presupuesto (Entregable 2)
+
+La sección «Viabilidad y presupuesto» usa la estimación ajustada del Entregable 2:
+
+- **Valor de referencia:** ≈ $13.030 millones COP, con un rango de $11.790 a $13.680 millones.
+- **Cálculo:** 2.000 m² × $4,59 millones por m² (terminal de San Miguel, precios de 2019) = $9.180 millones. Ese valor se actualiza a diciembre de 2025 con un factor acumulado de 1,419 (ICCV 2020–2021 e ICOCED 2022–2025), lo que suma ≈ $3.850 millones.
+- **Sin AIU:** no se suma porque el referente ya es un costo total.
+- **Detalles desplegables:** índices de actualización, ajuste frente a la formulación inicial ($11.934 M → ≈ $13.030 M), limitaciones y riesgos.
 
 ## Observaciones sobre las fuentes
 
-Los datos salen de los documentos *Formulación de proyecto*, *Contexto y Beneficiarios* y *Organización y Dirección*, y de la imagen de la maqueta. Al cruzarlos se encontraron estas diferencias, que el sitio presenta sin conciliar:
-
-- **Cotas de la planta frente al cuadro de medidas:** por ejemplo, equipajes (5,0 frente a 6,0 × 5,0), área de conductores (5,0 × 5,0 frente a 6,0 × 5,0), baños y duchas (3,0 × 4,0 frente a 3,0 × 3,0), taquillas (8,0 frente a 5,0 × 4,0) y plataformas (3,5 · 4,0 frente a 14,0 × 3,5).
-- **Cuadro de medidas frente al boceto de la formulación (figura 2):** a escala 1:100, solo la sala de espera coincide (14 × 10 cm ≈ 140 m²). El resto de las áreas del boceto son mayores; por ejemplo, el parqueadero de vehículos tiene 22 × 6 cm (≈ 132 m²) en la maqueta frente a 650 m² en el boceto.
-- **Área de 2.000 m²:** proviene del dimensionamiento poblacional, no de la suma de los espacios de la maqueta.
-- **Sitio del predio:** en la sección de recursos físicos, la formulación dice que el predio está «pendiente de identificación técnica (aún no se define el sitio exacto)». El sitio web ya muestra las coordenadas definidas por el equipo, así que conviene actualizar el documento.
-- **Población regional:** el texto de la formulación menciona «aproximadamente 169.000 habitantes» para la Provincia de Vélez, mientras que la tabla 3 usa 196.050. El sitio usa 196.050, como se indicó. Conviene revisar esa cifra en el documento.
+- **Sitio del predio:** el Entregable 2 dice que el sitio exacto aún no está definido, pero el sitio web muestra las coordenadas definidas por el equipo. Conviene unificarlo en el documento.
+- **Número de locales:** el Entregable 2 menciona «dos locales», mientras que la maqueta y el modelo 3D tienen cuatro locales comerciales. Conviene verificarlo.
 
 ## Logo de Conexión Constructora
 
@@ -122,6 +131,6 @@ Todo se dibuja con pocas mallas instanciadas para que siga siendo fluido en celu
 
 ## Personalización
 
-- Textos, funciones, elementos y medidas de cada espacio: `js/spaces.js`.
+- Textos, funciones y elementos de cada espacio: `js/spaces.js`.
 - Colores y tipografía: variables al inicio de `css/styles.css`.
 - Las imágenes `render-*.webp` se generaron a partir del propio modelo 3D.
